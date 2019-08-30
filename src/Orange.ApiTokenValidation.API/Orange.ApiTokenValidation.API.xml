@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Orange.ApiTokenValidation.API</name>
+    </assembly>
+    <members>
+        <member name="T:Orange.ApiTokenValidation.API.Configuration.ConfigureSwaggerOptions">
+            <summary>
+            Configures the Swagger generation options.
+            </summary>
+            <remarks>This allows API version to define a Swagger document per API version after the
+            <see cref="T:Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider"/> service has been resolved from the service container.</remarks>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Configuration.ConfigureSwaggerOptions.#ctor(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Orange.ApiTokenValidation.API.Configuration.ConfigureSwaggerOptions"/> class.
+            </summary>
+            <param name="provider">The <see cref="T:Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider">provider</see> used to generate Swagger documents.</param>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Configuration.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <inheritdoc />
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Configuration.FormatterConfig">
+            <summary>
+            Media formatter config
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Configuration.FormatterConfig.ConfigureJsonFormat(Microsoft.Extensions.DependencyInjection.IMvcBuilder)">
+            <summary>
+            Registration newtonjson media formatter
+            </summary>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Configuration.SwaggerConfig">
+            <summary>
+            Swagger UI configuration
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Configuration.SwaggerConfig.ConfigureSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Swagger configuration
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Configuration.SwaggerDefaultValues.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Applies the filter to the specified operation using the given context.
+            </summary>
+            <param name="operation">The operation to apply the filter to.</param>
+            <param name="context">The current operation filter context.</param>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenValidationRequest">
+            <summary>
+            Token DTO
+            </summary>
+        </member>
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenValidationRequest.Token">
+            <summary>
+            security token value
+            </summary>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenValidationResponse">
+            <summary>
+            Response on validation
+            </summary>
+        </member>
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenValidationResponse.ExpirationDate">
+            <summary>
+            ExpirationDate
+            </summary>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Controllers.V1.TokenValidationController">
+            <summary>
+            Token validation controller
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenValidationController.#ctor(Orange.ApiTokenValidation.Domain.Interfaces.ITokenValidationService,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Controllers.V1.TokenValidationController})">
+            <summary>
+            .ctor
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenValidationController.Validate(System.String,Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenValidationRequest)">
+            <summary>
+            Validate request
+            </summary>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Controllers.VersionController">
+            <summary>
+            Version controller
+            </summary>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Filters.OperationCancelledExceptionFilter">
+            https://andrewlock.net/using-cancellationtokens-in-asp-net-core-mvc-controllers/
+             <summary>
+             Log connection cancelled exception as a 499
+             (when user cancelled request)
+             </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Filters.OperationCancelledExceptionFilter.#ctor(Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Filters.OperationCancelledExceptionFilter})">
+            <summary>
+            .ctor
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Filters.OperationCancelledExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <summary>
+            On throw exception
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container. 
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+        </member>
+    </members>
+</doc>

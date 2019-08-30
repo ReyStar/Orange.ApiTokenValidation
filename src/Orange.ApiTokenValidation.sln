@@ -1,0 +1,80 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Bootstrapper", "Orange.ApiTokenValidation.Bootstrapper\Orange.ApiTokenValidation.Bootstrapper.csproj", "{9750BB44-9C25-4B29-8596-093CB55D596B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.API", "Orange.ApiTokenValidation.API\Orange.ApiTokenValidation.API.csproj", "{C5EAD129-B104-489F-9478-785B877DF9EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Domain", "Orange.ApiTokenValidation.Domain\Orange.ApiTokenValidation.Domain.csproj", "{8554B80B-6B28-4EBB-A473-FDD8A80A9ECB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Repositories", "Orange.ApiTokenValidation.Repositories\Orange.ApiTokenValidation.Repositories.csproj", "{97F9C11F-8D7E-4A18-9939-013909126133}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E77C93CD-D7A2-4C9F-BF29-9583621E5EEB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Notification", "Orange.ApiTokenValidation.Notification\Orange.ApiTokenValidation.Notification.csproj", "{44CAFF30-F93B-4CFE-9F9E-789BA40CE221}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Domain.Tests", "Tests\Orange.ApiTokenValidation.Domain.Tests\Orange.ApiTokenValidation.Domain.Tests.csproj", "{FE4847D1-6B82-4E12-BB94-7CA09012D5D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Repositories.Tests", "Tests\Orange.ApiTokenValidation.Repositories.Tests\Orange.ApiTokenValidation.Repositories.Tests.csproj", "{16CCB713-0618-47A6-9D50-9581AB94BAE3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Common", "Orange.ApiTokenValidation.Common\Orange.ApiTokenValidation.Common.csproj", "{F9B910E4-A20A-4E82-AF95-294D9AB0344D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orange.ApiTokenValidation.API.Tests", "Tests\Orange.ApiTokenValidation.API.Tests\Orange.ApiTokenValidation.API.Tests.csproj", "{E1D4C9A6-15D8-4710-A477-56CB090ECE01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9750BB44-9C25-4B29-8596-093CB55D596B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9750BB44-9C25-4B29-8596-093CB55D596B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9750BB44-9C25-4B29-8596-093CB55D596B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9750BB44-9C25-4B29-8596-093CB55D596B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5EAD129-B104-489F-9478-785B877DF9EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5EAD129-B104-489F-9478-785B877DF9EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5EAD129-B104-489F-9478-785B877DF9EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5EAD129-B104-489F-9478-785B877DF9EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8554B80B-6B28-4EBB-A473-FDD8A80A9ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8554B80B-6B28-4EBB-A473-FDD8A80A9ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8554B80B-6B28-4EBB-A473-FDD8A80A9ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8554B80B-6B28-4EBB-A473-FDD8A80A9ECB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97F9C11F-8D7E-4A18-9939-013909126133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97F9C11F-8D7E-4A18-9939-013909126133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97F9C11F-8D7E-4A18-9939-013909126133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97F9C11F-8D7E-4A18-9939-013909126133}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44CAFF30-F93B-4CFE-9F9E-789BA40CE221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44CAFF30-F93B-4CFE-9F9E-789BA40CE221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44CAFF30-F93B-4CFE-9F9E-789BA40CE221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44CAFF30-F93B-4CFE-9F9E-789BA40CE221}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE4847D1-6B82-4E12-BB94-7CA09012D5D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE4847D1-6B82-4E12-BB94-7CA09012D5D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE4847D1-6B82-4E12-BB94-7CA09012D5D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE4847D1-6B82-4E12-BB94-7CA09012D5D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16CCB713-0618-47A6-9D50-9581AB94BAE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16CCB713-0618-47A6-9D50-9581AB94BAE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16CCB713-0618-47A6-9D50-9581AB94BAE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16CCB713-0618-47A6-9D50-9581AB94BAE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9B910E4-A20A-4E82-AF95-294D9AB0344D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B910E4-A20A-4E82-AF95-294D9AB0344D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9B910E4-A20A-4E82-AF95-294D9AB0344D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9B910E4-A20A-4E82-AF95-294D9AB0344D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1D4C9A6-15D8-4710-A477-56CB090ECE01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1D4C9A6-15D8-4710-A477-56CB090ECE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1D4C9A6-15D8-4710-A477-56CB090ECE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1D4C9A6-15D8-4710-A477-56CB090ECE01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FE4847D1-6B82-4E12-BB94-7CA09012D5D4} = {E77C93CD-D7A2-4C9F-BF29-9583621E5EEB}
+		{16CCB713-0618-47A6-9D50-9581AB94BAE3} = {E77C93CD-D7A2-4C9F-BF29-9583621E5EEB}
+		{E1D4C9A6-15D8-4710-A477-56CB090ECE01} = {E77C93CD-D7A2-4C9F-BF29-9583621E5EEB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90A95C32-7DF9-4750-B299-653F34F069DD}
+	EndGlobalSection
+EndGlobal

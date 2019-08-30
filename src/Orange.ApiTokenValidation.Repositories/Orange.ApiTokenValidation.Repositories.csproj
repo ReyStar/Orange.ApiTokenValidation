@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SQL\CreateTokenDB.sql" />
+    <None Remove="SQL\CreateTokenTable.sql" />
+    <None Remove="SQL\DropTokenDB.sql" />
+    <None Remove="SQL\TokenTableDelete.sql" />
+    <None Remove="SQL\TokenTableInsert.sql" />
+    <None Remove="SQL\TokenTableSelect.sql" />
+    <None Remove="SQL\TokenTableSelectByIssuerAndAudience.sql" />
+    <None Remove="SQL\TokenTableUpdate.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SQL\DropTokenDB.sql" />
+    <EmbeddedResource Include="SQL\TokenTableInsert.sql" />
+    <EmbeddedResource Include="SQL\TokenTableSelect.sql" />
+    <EmbeddedResource Include="SQL\TokenTableSelectByIssuerAndAudience.sql" />
+    <EmbeddedResource Include="SQL\CreateTokenDB.sql" />
+    <EmbeddedResource Include="SQL\CreateTokenTable.sql" />
+    <EmbeddedResource Include="SQL\TokenTableUpdate.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Orange.ApiTokenValidation.Domain\Orange.ApiTokenValidation.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.4" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Dapper" Version="1.60.6" />
+    <PackageReference Include="Dapper.FluentMap" Version="1.8.0" />
+    <PackageReference Include="Npgsql" Version="4.1.0-preview1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SQL\TokenTableDelete.sql" />
+  </ItemGroup>
+
+</Project>

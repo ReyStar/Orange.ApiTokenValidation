@@ -52,7 +52,13 @@ namespace Orange.ApiTokenValidation.Bootstrapper
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseKestrel();
+                    webBuilder.UseKestrel()
+                    //    .Configure(
+                    //    (webHostBuilderContext, applicationBuilder) =>
+                    //{
+                      
+                    //})
+                        ;
                     webBuilder.ConfigureServices((context, services) =>
                     {
                         var defaultHttpsPort = context.Configuration.GetValue<int>("Kestrel:DefaultHttpsPort");

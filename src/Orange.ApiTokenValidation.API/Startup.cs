@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Orange.ApiTokenValidation.API.Configuration;
 using Orange.ApiTokenValidation.API.Filters;
 using Orange.ApiTokenValidation.API.Services;
+using Prometheus;
 
 namespace Orange.ApiTokenValidation.API
 {
@@ -27,7 +27,8 @@ namespace Orange.ApiTokenValidation.API
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddControllers(config =>
+            services
+                .AddControllers(config =>
                                     {
                                         //config.EnableEndpointRouting = true;
                                         config.Filters.Add<OperationCancelledExceptionFilter>();
@@ -57,6 +58,7 @@ namespace Orange.ApiTokenValidation.API
                               IApiVersionDescriptionProvider provider)
         {
             app.UseMiddleware<CorrelationIdMiddleware>();
+            app.UseMetricServer();
 
             if (env.IsDevelopment())
             {
@@ -73,6 +75,8 @@ namespace Orange.ApiTokenValidation.API
             //app.UseAuthorization();
 
             app.UseRouting();
+
+            app.UseHttpMetrics();
 
             app.UseEndpoints(endpoints =>
             {

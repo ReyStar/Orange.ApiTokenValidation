@@ -100,21 +100,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Orange.ApiTokenValidation.API.Filters.CorrelationIdMiddleware">
-            <summary>
-            Correlation id middleware
-            </summary>
-        </member>
-        <member name="M:Orange.ApiTokenValidation.API.Filters.CorrelationIdMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Filters.CorrelationIdMiddleware})">
-            <summary>
-            .ctor
-            </summary>
-        </member>
-        <member name="M:Orange.ApiTokenValidation.API.Filters.CorrelationIdMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
-            <summary>
-            Add correlation id
-            </summary>
-        </member>
         <member name="T:Orange.ApiTokenValidation.API.Filters.OperationCancelledExceptionFilter">
             https://andrewlock.net/using-cancellationtokens-in-asp-net-core-mvc-controllers/
              <summary>
@@ -130,6 +115,31 @@
         <member name="M:Orange.ApiTokenValidation.API.Filters.OperationCancelledExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
             <summary>
             On throw exception
+            </summary>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Middleware.CorrelationIdMiddleware">
+            <summary>
+            Correlation id middleware
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Middleware.CorrelationIdMiddleware.#ctor(Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Middleware.CorrelationIdMiddleware})">
+            <summary>
+            .ctor
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Middleware.CorrelationIdMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Add correlation id
+            </summary>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Middleware.RequestWriterMiddleware">
+            <summary>
+            Write request metrics
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Middleware.RequestWriterMiddleware.#ctor(Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Middleware.RequestWriterMiddleware})">
+            <summary>
+            .ctor
             </summary>
         </member>
         <member name="T:Orange.ApiTokenValidation.API.Startup">

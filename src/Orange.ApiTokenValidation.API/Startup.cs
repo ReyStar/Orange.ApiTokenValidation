@@ -11,6 +11,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Orange.ApiTokenValidation.API.Configuration;
 using Orange.ApiTokenValidation.API.Filters;
+using Orange.ApiTokenValidation.API.Middleware;
 using Orange.ApiTokenValidation.API.Services;
 using Prometheus;
 
@@ -58,7 +59,10 @@ namespace Orange.ApiTokenValidation.API
                               IApiVersionDescriptionProvider provider)
         {
             app.UseMiddleware<CorrelationIdMiddleware>();
+
             app.UseMetricServer();
+
+            app.UseMiddleware<RequestWriterMiddleware>();
 
             if (env.IsDevelopment())
             {

@@ -4,14 +4,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Orange.ApiTokenValidation.API.Filters
+namespace Orange.ApiTokenValidation.API.Middleware
 {
     /// <summary>
     /// Correlation id middleware
     /// </summary>
-    public class CorrelationIdMiddleware
+    public class CorrelationIdMiddleware : IMiddleware
     {
-        private readonly RequestDelegate _next;
         private readonly ILogger _logger;
         private const string Header = "x-correlation-id";
         private const string CorrelationIdScope = "CorrelationID";
@@ -19,23 +18,22 @@ namespace Orange.ApiTokenValidation.API.Filters
         /// <summary>
         /// .ctor
         /// </summary>
-        public CorrelationIdMiddleware(RequestDelegate next, ILogger<CorrelationIdMiddleware> logger)
+        public CorrelationIdMiddleware(ILogger<CorrelationIdMiddleware> logger)
         {
-            _next = next;
             _logger = logger;
         }
 
         /// <summary>
         /// Add correlation id
         /// </summary>
-        public async Task InvokeAsync(HttpContext context)
+        public Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             if (!context.Request.Headers.TryGetValue(Header, out var correlationId))
             {
-                correlationId = Guid.NewGuid().ToString(); 
+                correlationId = Guid.NewGuid().ToString();
             }
 
-            using (_logger.BeginScope(new Dictionary<string, object> { [CorrelationIdScope] = correlationId }))
+            using (_logger.BeginScope(new Dictionary<string, object> {[CorrelationIdScope] = correlationId}))
             {
                 //var requestIdFeature = context.Features.Get<IHttpRequestIdentifierFeature>();
                 //if (requestIdFeature?.TraceIdentifier != null)
@@ -45,7 +43,7 @@ namespace Orange.ApiTokenValidation.API.Filters
 
                 context.Response.Headers[Header] = correlationId;
 
-                await _next(context);
+                return next(context);
             }
         }
     }

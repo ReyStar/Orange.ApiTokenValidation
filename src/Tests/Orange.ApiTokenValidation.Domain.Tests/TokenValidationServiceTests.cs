@@ -84,7 +84,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             // Arrange
 
             // Act
-            var result = await _tokenService.Validate(_audience, _stringToken);
+            var result = await _tokenService.ValidateAsync(_audience, _stringToken);
 
             // Assert
             result.Should().NotBeNull();
@@ -98,7 +98,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             // Arrange
 
             // Act
-            var result = Assert.CatchAsync<ArgumentException>(() => _tokenService.Validate(null, _stringToken));
+            var result = Assert.CatchAsync<ArgumentException>(() => _tokenService.ValidateAsync(null, _stringToken));
 
             // Assert
             result.Should().NotBeNull();
@@ -111,7 +111,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             // Arrange
             
             // Act
-            var result = Assert.CatchAsync<ArgumentException>(() => _tokenService.Validate(_audience, null));
+            var result = Assert.CatchAsync<ArgumentException>(() => _tokenService.ValidateAsync(_audience, null));
 
             // Assert
             result.Should().NotBeNull();
@@ -125,7 +125,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             // Arrange
             
             // Act
-            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.Validate(_audience, token));
+            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.ValidateAsync(_audience, token));
 
             // Assert
             result.Should().NotBeNull();
@@ -140,7 +140,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             var stringToken = _handler.WriteToken(token);
 
             // Act
-            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.Validate(_audience, stringToken));
+            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.ValidateAsync(_audience, stringToken));
 
             // Assert
             result.Should().NotBeNull();
@@ -156,7 +156,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             var stringToken = _handler.WriteToken(token);
 
             // Act
-            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.Validate(_audience, stringToken));
+            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.ValidateAsync(_audience, stringToken));
 
             // Assert
             result.Should().NotBeNull();
@@ -170,7 +170,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             _tokenRepository.Setup(x => x.GetAsync(_issuer, _audience, CancellationToken.None)).ReturnsAsync((TokenDescriptor) null);
 
             // Act
-            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.Validate(_audience, _stringToken));
+            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.ValidateAsync(_audience, _stringToken));
 
             // Assert
             result.Should().NotBeNull();
@@ -184,7 +184,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             _tokenDescriptor.IsActive = false;
 
             // Act
-            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.Validate(_audience, _stringToken));
+            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.ValidateAsync(_audience, _stringToken));
 
             // Assert
             result.Should().NotBeNull();
@@ -199,7 +199,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
 
             // Act
             var result =
-                Assert.CatchAsync<TokenValidationException>(() => _tokenService.Validate(_audience, _stringToken));
+                Assert.CatchAsync<TokenValidationException>(() => _tokenService.ValidateAsync(_audience, _stringToken));
 
             // Assert
             result.Should().NotBeNull();
@@ -215,7 +215,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             var stringToken = _handler.WriteToken(token);
 
             // Act
-            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.Validate(_audience, stringToken));
+            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.ValidateAsync(_audience, stringToken));
 
             // Assert
             result.Should().NotBeNull();
@@ -235,7 +235,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             var stringToken = _handler.WriteToken(token);
 
             // Act
-            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.Validate(_audience, stringToken));
+            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.ValidateAsync(_audience, stringToken));
 
             // Assert
             result.Should().NotBeNull();
@@ -255,7 +255,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             var stringToken = _handler.WriteToken(token);
 
             // Act
-            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.Validate(_audience, stringToken));
+            var result = Assert.CatchAsync<TokenValidationException>(() => _tokenService.ValidateAsync(_audience, stringToken));
 
             // Assert
             result.Should().NotBeNull();

@@ -25,6 +25,7 @@ namespace Orange.ApiTokenValidation.API.Configuration
         /// <inheritdoc />
         public void Configure(SwaggerGenOptions options)
         {
+            options.DescribeAllEnumsAsStrings();
             // add a swagger document for each discovered API version
             // note: you might choose to skip or document deprecated API versions differently
             foreach (var description in provider.ApiVersionDescriptions)

@@ -78,14 +78,41 @@
             .ctor
             </summary>
         </member>
-        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenValidationController.Validate(System.String,Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenValidationRequest)">
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenValidationController.ValidateAsync(System.String,Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenValidationRequest,System.Threading.CancellationToken)">
             <summary>
-            Validate request
+            ValidateAsync request
             </summary>
         </member>
         <member name="T:Orange.ApiTokenValidation.API.Controllers.VersionController">
             <summary>
             Version controller
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.VersionController.#ctor(Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Controllers.VersionController})">
+            <summary>
+            .ctor
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.VersionController.GetVersion">
+            <summary>
+            Application version
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Filters.CorrelationIdMiddleware">
+            <summary>
+            Correlation id middleware
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Filters.CorrelationIdMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Filters.CorrelationIdMiddleware})">
+            <summary>
+            .ctor
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Filters.CorrelationIdMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Add correlation id
             </summary>
         </member>
         <member name="T:Orange.ApiTokenValidation.API.Filters.OperationCancelledExceptionFilter">
@@ -103,6 +130,11 @@
         <member name="M:Orange.ApiTokenValidation.API.Filters.OperationCancelledExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
             <summary>
             On throw exception
+            </summary>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Startup">
+            <summary>
+            Startup
             </summary>
         </member>
         <member name="M:Orange.ApiTokenValidation.API.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">

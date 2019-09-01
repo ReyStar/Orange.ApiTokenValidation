@@ -15,7 +15,7 @@ namespace Orange.ApiTokenValidation.API.Configuration
             var apiDescription = context.ApiDescription;
 
             //operation.Deprecated = apiDescription.IsDeprecated();
-
+            
             if (operation.Parameters == null)
             {
                 return;

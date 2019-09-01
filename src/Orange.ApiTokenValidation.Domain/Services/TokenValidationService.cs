@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.IdentityModel.Tokens;
@@ -26,7 +27,7 @@ namespace Orange.ApiTokenValidation.Domain.Services
             _tokenHandler = new JwtSecurityTokenHandler();
         }
 
-        public async Task<AuthenticationResult> Validate(string audience, string token)
+        public async Task<TokenValidationResult> ValidateAsync(string audience, string token, CancellationToken cancellationToken = default)
         {
             EnsureArg.IsNotNullOrWhiteSpace(audience, nameof(audience));
             EnsureArg.IsNotNullOrWhiteSpace(token, nameof(token));
@@ -49,7 +50,7 @@ namespace Orange.ApiTokenValidation.Domain.Services
                 throw new TokenValidationException(I18n.TokenAudienceError);
             }
 
-            var tokenDescriptor = await _tokenRepository.GetAsync(issuer, audience) 
+            var tokenDescriptor = await _tokenRepository.GetAsync(issuer, audience, cancellationToken) 
                                   ?? throw new TokenValidationException(I18n.NotRegistered);
 
             if (!tokenDescriptor.IsActive)
@@ -64,7 +65,7 @@ namespace Orange.ApiTokenValidation.Domain.Services
                 throw new TokenValidationException(I18n.TokenTtlLarge);
             }
 
-            return new AuthenticationResult
+            return new TokenValidationResult
             {
                 Expiration = (long)(securityToken.ValidTo - securityToken.ValidFrom).TotalSeconds
             };

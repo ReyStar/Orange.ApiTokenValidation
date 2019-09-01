@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -23,11 +23,6 @@ namespace Orange.ApiTokenValidation.Bootstrapper
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            var applicationPath = PlatformServices.Default.Application.ApplicationBasePath;
-            
-            //  var isDevelopment = environment == EnvironmentName.Development;
-            //Environment
             var hostBuilder = Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>
                 {
@@ -39,30 +34,32 @@ namespace Orange.ApiTokenValidation.Bootstrapper
                     builder.RegisterModule<API.Registration.AutofacModule>();
 
                     builder.RegisterAutoMapper();
-
-
                 }))
                 .ConfigureAppConfiguration((context, builder) =>
                 {
-                    //builder.Add()
+                    builder.AddCommandLine(args);
+                    builder.AddEnvironmentVariables();
+
+                    var applicationPath = PlatformServices.Default.Application.ApplicationBasePath;
+                    builder.SetBasePath(applicationPath)
+                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                        .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
                 })
                 .ConfigureHostConfiguration(builder =>
                 {
-                    builder.AddCommandLine(args);
-                    builder.AddEnvironmentVariables();
-                    builder.SetBasePath(applicationPath)
-                           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                           .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true);
+                    //var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseKestrel();
-                    
-                    webBuilder.ConfigureServices(services =>
+                    webBuilder.ConfigureServices((context, services) =>
                     {
+                        var defaultHttpsPort = context.Configuration.GetValue<int>("Kestrel:DefaultHttpsPort");
+                        services.AddHttpsRedirection(options => { options.HttpsPort = defaultHttpsPort; });
                     });
-                });
+                })
+                .RegisterLogger();
 
             return hostBuilder;
         }

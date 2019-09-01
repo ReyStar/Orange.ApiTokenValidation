@@ -16,31 +16,26 @@ using Orange.ApiTokenValidation.API.Services;
 
 namespace Orange.ApiTokenValidation.API
 {
+    /// <summary>
+    /// Startup
+    /// </summary>
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; set; }
-
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container. 
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            var mvcBuilder = services.AddMvc(config =>
-                {
-                    //config.EnableEndpointRouting = true;
-                    config.Filters.Add<OperationCancelledExceptionFilter>();
-                })
-                .AddControllersAsServices()// Add controllers as services so they'll be resolved.
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddNewtonsoftJson();
-
-            mvcBuilder.ConfigureJsonFormat();
+            services.AddControllers(config =>
+                                    {
+                                        //config.EnableEndpointRouting = true;
+                                        config.Filters.Add<OperationCancelledExceptionFilter>();
+                                    })
+            .AddControllersAsServices()// Add controllers as services so they'll be resolved.
+            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            .AddNewtonsoftJson()
+            .ConfigureJsonFormat();
 
             services.Configure<GzipCompressionProviderOptions>(options =>
             {
@@ -52,16 +47,17 @@ namespace Orange.ApiTokenValidation.API
             services.AddHealthChecks().AddCheck<HealthCheck>("base_health_check");
 
             services.ConfigureSwagger();
-
         }
 
         /// <summary>
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
-        public void Configure(IApplicationBuilder app, 
-                              IWebHostEnvironment env, 
+        public void Configure(IApplicationBuilder app,
+                              IWebHostEnvironment env,
                               IApiVersionDescriptionProvider provider)
         {
+            app.UseMiddleware<CorrelationIdMiddleware>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -72,18 +68,7 @@ namespace Orange.ApiTokenValidation.API
                 app.UseHsts();
             }
 
-            //app.UseMvc();
-            //app.UseHttpsRedirection();
-
-            //app.UseHttpsRedirection();
-
-            //app.UseRouting
-            //(
-            //routes =>
-            //{
-            //    routes.MapApplication();
-            //}
-            //);
+            app.UseHttpsRedirection();
 
             //app.UseAuthorization();
 
@@ -122,16 +107,7 @@ namespace Orange.ApiTokenValidation.API
             if (env.IsDevelopment())
             {
                 //activate swagger ui
-                app.UseSwagger();
-                app.UseSwaggerUI(
-                    options =>
-                    {
-                        // build a swagger endpoint for each discovered API version
-                        foreach (var description in provider.ApiVersionDescriptions)
-                        {
-                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                        }
-                    });
+                app.EnableSwagger(provider);
             }
         }
     }

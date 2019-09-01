@@ -1,5 +1,6 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Orange.ApiTokenValidation.API.Controllers
 {
@@ -10,14 +11,32 @@ namespace Orange.ApiTokenValidation.API.Controllers
     [Route("[controller]")]
     public class VersionController : Controller
     {
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var version = Assembly.GetEntryAssembly()
-                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-                .InformationalVersion;
+        private readonly ILogger _logger;
 
-            return Ok(version);
+        /// <summary>
+        /// .ctor
+        /// </summary>
+        /// <param name="logger"></param>
+        public VersionController(ILogger<VersionController> logger)
+        {
+            _logger = logger;
+        }
+
+        /// <summary>
+        /// Application version
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetVersion()
+        {
+            using (_logger.BeginScope("CorrelationID"))
+            {
+                _logger.LogInformation("Version request");
+
+                var version = PlatformServices.Default.Application.ApplicationVersion;
+
+                return Ok(version);
+            }
         }
     }
 }

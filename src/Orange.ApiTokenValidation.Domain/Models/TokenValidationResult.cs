@@ -1,6 +1,6 @@
 ﻿namespace Orange.ApiTokenValidation.Domain.Models
 {
-    public class AuthenticationResult
+    public class TokenValidationResult
     {
         /// <summary> 
         /// Expiration

@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Orange.ApiTokenValidation.API.Attributes;
 using Orange.ApiTokenValidation.API.Controllers.V1.DTO;
 using Orange.ApiTokenValidation.Domain.Exceptions;
@@ -29,7 +31,9 @@ namespace Orange.ApiTokenValidation.API.Controllers.V1
         /// <summary>
         /// .ctor
         /// </summary>
-        public TokenValidationController(ITokenValidationService tokenValidationService, IMapper mapper, ILogger<TokenValidationController> logger)
+        public TokenValidationController(ITokenValidationService tokenValidationService, 
+                                         IMapper mapper,
+                                         ILogger<TokenValidationController> logger)
         {
             _tokenValidationService = tokenValidationService;
             _mapper = mapper;
@@ -37,18 +41,22 @@ namespace Orange.ApiTokenValidation.API.Controllers.V1
         }
 
         /// <summary>
-        /// Validate request
+        /// ValidateAsync request
         /// </summary>
         [Route("audience/{audience}/validate/token")]
         [HttpPost]
         [ProducesResponseType(typeof(TokenValidationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(TokenValidationResponse), StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
-        public async Task<IActionResult> Validate([FromRoute] string audience, [FromBody] TokenValidationRequest validationRequest)
+        public async Task<IActionResult> ValidateAsync([FromRoute] string audience,
+                                                       [FromBody] TokenValidationRequest validationRequest,
+                                                       CancellationToken cancellationToken = default)
         {
+            //_mapper.Map<>()
+            //_logger.LogInformation("Validation request");
             try
             {
-                var result = await _tokenValidationService.Validate(audience, validationRequest.Token);
+                var result = await _tokenValidationService.ValidateAsync(audience, validationRequest.Token, cancellationToken);
 
                 return Ok(_mapper.Map<TokenValidationResponse>(result));
             }

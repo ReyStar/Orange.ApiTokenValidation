@@ -14,6 +14,11 @@ variables:
   buildConfiguration: 'Development'
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Use dotnet sdk 3.x'
+  inputs:
+    version: 3.x
+    includePreviewVersions: true
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'

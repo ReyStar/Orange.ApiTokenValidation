@@ -142,6 +142,11 @@
             .ctor
             </summary>
         </member>
+        <member name="T:Orange.ApiTokenValidation.API.Services.HeartbeatService">
+            <summary>
+            Heartbeat service
+            </summary>
+        </member>
         <member name="T:Orange.ApiTokenValidation.API.Startup">
             <summary>
             Startup

@@ -2,6 +2,8 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using AutoFixture.NUnit3;
 using AutoMapper;
 using FluentAssertions;
@@ -10,11 +12,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Orange.ApiTokenValidation.API.Controllers.V1;
 using Orange.ApiTokenValidation.API.Controllers.V1.DTO;
+using Orange.ApiTokenValidation.API.Middleware;
 using Orange.ApiTokenValidation.Domain.Exceptions;
 using Orange.ApiTokenValidation.Domain.Interfaces;
 using Orange.ApiTokenValidation.Domain.Models;
@@ -33,19 +37,22 @@ namespace Orange.ApiTokenValidation.API.Tests
         [OneTimeSetUp]
         public void Initialize()
         {
-            _tokenValidationService= new Mock<ITokenValidationService>();
+            _tokenValidationService = new Mock<ITokenValidationService>();
             _mapper = new Mock<IMapper>();
             _logger = new Mock<ILogger<TokenValidationController>>();
-            
-            _server = new TestServer(new WebHostBuilder().UseStartup<Startup>()
-                                                         .UseEnvironment("Development")
-                                                         .ConfigureTestServices(collection =>
-                                                         {
-                                                             collection.AddSingleton<ITokenValidationService>(_tokenValidationService.Object);
-                                                             collection.AddSingleton<IMapper>(_mapper.Object);
-                                                             collection.AddSingleton<ILogger<TokenValidationController>>(_logger.Object);
-                                                         })
-            );
+
+
+            _server = new TestServer(new WebHostBuilder()
+                                                   .UseStartup<Startup>()
+                                                .UseEnvironment("Development")
+                                                .ConfigureTestServices(collection =>
+                                                {
+                                                    collection.AddSingleton<ITokenValidationService>(_tokenValidationService.Object);
+                                                    collection.AddSingleton<IMapper>(_mapper.Object);
+                                                    collection.AddSingleton<ILogger<TokenValidationController>>(_logger.Object);
+                                                    collection.AddSingleton<CorrelationIdMiddleware>();
+                                                    collection.AddSingleton<RequestWriterMiddleware>();
+                                                }));
             _client = _server.CreateClient();
             _client.BaseAddress = new Uri("https://localhost:53247");
         }
@@ -74,16 +81,17 @@ namespace Orange.ApiTokenValidation.API.Tests
         [Test]
         [AutoData]
         public async Task ValidateAsync_Successful(string audience,
+                                                   TokenModel tokenModel,
                                                    TokenValidationResult tokenValidationResult,
                                                    TokenValidationRequest validationRequest,
-                                                   TokenValidationResponse tokenValidationResponse
-                                                   )
+                                                   TokenValidationResponse tokenValidationResponse)
         {
             // Arrange
             _tokenValidationService
-                .Setup(x => x.ValidateAsync(audience, validationRequest.Token, It.IsAny<CancellationToken>()))
+                .Setup(x => x.ValidateAsync(audience, tokenModel, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(tokenValidationResult);
 
+            _mapper.Setup(x => x.Map<TokenModel>(It.Is<TokenValidationRequest>(p => p.Token == validationRequest.Token))).Returns(tokenModel);
             _mapper.Setup(x => x.Map<TokenValidationResponse>(tokenValidationResult)).Returns(tokenValidationResponse);
 
             // Act
@@ -100,14 +108,17 @@ namespace Orange.ApiTokenValidation.API.Tests
 
         [Test]
         [AutoData]
-        public async Task ValidateAsync_BadRequest(string audience, 
-                                                   TokenValidationRequest validationRequest, 
+        public async Task ValidateAsync_BadRequest(string audience,
+                                                   TokenModel tokenModel,
+                                                   TokenValidationRequest validationRequest,
                                                    TokenValidationException exception)
         {
             // Arrange
             _tokenValidationService
-                .Setup(x => x.ValidateAsync(audience, validationRequest.Token, It.IsAny<CancellationToken>()))
+                .Setup(x => x.ValidateAsync(audience, tokenModel, It.IsAny<CancellationToken>()))
                 .ThrowsAsync(exception);
+
+            _mapper.Setup(x => x.Map<TokenModel>(It.Is<TokenValidationRequest>(p => p.Token == validationRequest.Token))).Returns(tokenModel);
 
             // Act
             var result = await _client.PostAsync(string.Format(ValidationRequestPath, audience), new JsonContent(validationRequest));

@@ -41,19 +41,22 @@ namespace Orange.ApiTokenValidation.API.Tests
         [Test]
         [AutoData]
         public async Task ValidateAsync_Successful(string audience, 
+                                                   TokenModel tokenModel,
                                                    TokenValidationRequest validationRequest, 
                                                    TokenValidationResult tokenValidationResult, 
                                                    TokenValidationResponse tokenValidationResponse)
         {
             // Arrange
             _tokenValidationService
-                .Setup(x => x.ValidateAsync(audience, validationRequest.Token, CancellationToken.None))
+                .Setup(x => x.ValidateAsync(audience, tokenModel, CancellationToken.None))
                 .ReturnsAsync(tokenValidationResult);
 
             _mapper.Setup(x => x.Map<TokenValidationResponse>(tokenValidationResult)).Returns(tokenValidationResponse);
 
-           // Act
-           var result = await _controller.ValidateAsync(audience, validationRequest, CancellationToken.None);
+            _mapper.Setup(x => x.Map<TokenModel>(It.Is<TokenValidationRequest>(p => p.Token == validationRequest.Token))).Returns(tokenModel);
+
+            // Act
+            var result = await _controller.ValidateAsync(audience, validationRequest, CancellationToken.None);
 
             // Assert
             var okObjectResult = result.Should().BeOfType<OkObjectResult>();
@@ -65,17 +68,20 @@ namespace Orange.ApiTokenValidation.API.Tests
 
         [Test]
         [AutoData]
-        public async Task ValidateAsync_BadRequest(string audience, 
+        public async Task ValidateAsync_BadRequest(string audience,
+                                                   TokenModel tokenModel,
                                                    TokenValidationRequest validationRequest, 
                                                    TokenValidationException exception)
         {
             // Arrange
             _tokenValidationService
-                .Setup(x => x.ValidateAsync(audience, validationRequest.Token, CancellationToken.None))
+                .Setup(x => x.ValidateAsync(audience, tokenModel, CancellationToken.None))
                 .ThrowsAsync(exception);
 
-           // Act
-           var result = await _controller.ValidateAsync(audience, validationRequest, CancellationToken.None);
+            _mapper.Setup(x => x.Map<TokenModel>(It.Is<TokenValidationRequest>(p => p.Token == validationRequest.Token))).Returns(tokenModel);
+
+            // Act
+            var result = await _controller.ValidateAsync(audience, validationRequest, CancellationToken.None);
 
             // Assert
             var badRequestObjectResult = result.Should().BeOfType<BadRequestObjectResult>();

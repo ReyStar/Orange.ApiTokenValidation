@@ -27,9 +27,12 @@ namespace Orange.ApiTokenValidation.Domain.Services
             _tokenHandler = new JwtSecurityTokenHandler();
         }
 
-        public async Task<TokenValidationResult> ValidateAsync(string audience, string token, CancellationToken cancellationToken = default)
+        public async Task<TokenValidationResult> ValidateAsync(string audience, TokenModel tokenModel, CancellationToken cancellationToken = default)
         {
+            
             EnsureArg.IsNotNullOrWhiteSpace(audience, nameof(audience));
+            EnsureArg.IsNotNull(tokenModel, nameof(tokenModel));
+            var token = tokenModel.Value;
             EnsureArg.IsNotNullOrWhiteSpace(token, nameof(token));
 
             if (!_tokenHandler.CanReadToken(token))

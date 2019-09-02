@@ -10,6 +10,7 @@ using Orange.ApiTokenValidation.API.Attributes;
 using Orange.ApiTokenValidation.API.Controllers.V1.DTO;
 using Orange.ApiTokenValidation.Domain.Exceptions;
 using Orange.ApiTokenValidation.Domain.Interfaces;
+using Orange.ApiTokenValidation.Domain.Models;
 
 namespace Orange.ApiTokenValidation.API.Controllers.V1
 {
@@ -52,11 +53,11 @@ namespace Orange.ApiTokenValidation.API.Controllers.V1
                                                        [FromBody] TokenValidationRequest validationRequest,
                                                        CancellationToken cancellationToken = default)
         {
-            //_mapper.Map<>()
-            //_logger.LogInformation("Validation request");
+            var tokenModel = _mapper.Map<TokenModel>(validationRequest);
+            _logger.LogInformation("Validation request");
             try
             {
-                var result = await _tokenValidationService.ValidateAsync(audience, validationRequest.Token, cancellationToken);
+                var result = await _tokenValidationService.ValidateAsync(audience, tokenModel, cancellationToken);
 
                 return Ok(_mapper.Map<TokenValidationResponse>(result));
             }

@@ -6,6 +6,6 @@ namespace Orange.ApiTokenValidation.Domain.Interfaces
 {
     public interface ITokenValidationService
     {
-        Task<TokenValidationResult> ValidateAsync(string audience, string token, CancellationToken cancellationToken = default);
+        Task<TokenValidationResult> ValidateAsync(string audience, TokenModel tokenModel, CancellationToken cancellationToken = default);
     }
 }

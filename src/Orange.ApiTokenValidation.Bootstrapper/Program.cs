@@ -18,7 +18,7 @@ namespace Orange.ApiTokenValidation.Bootstrapper
         public static Task Main(string[] args)
         {
             return CreateHostBuilder(args).Build()
-                                          .RunAsync();
+                .RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
@@ -53,17 +53,21 @@ namespace Orange.ApiTokenValidation.Bootstrapper
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseKestrel()
-                    //    .Configure(
-                    //    (webHostBuilderContext, applicationBuilder) =>
-                    //{
-                      
-                    //})
+                        //    .Configure(
+                        //    (webHostBuilderContext, applicationBuilder) =>
+                        //{
+
+                        //})
                         ;
                     webBuilder.ConfigureServices((context, services) =>
                     {
                         var defaultHttpsPort = context.Configuration.GetValue<int>("Kestrel:DefaultHttpsPort");
                         services.AddHttpsRedirection(options => { options.HttpsPort = defaultHttpsPort; });
                     });
+                })
+                .ConfigureServices((context, collection) =>
+                {
+                    // collection.AddSingleton<IHostedService, HostedService>();
                 })
                 .RegisterLogger();
 

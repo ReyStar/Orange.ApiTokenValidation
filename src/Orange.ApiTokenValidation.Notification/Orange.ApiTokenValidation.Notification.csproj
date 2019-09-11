@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Orange.ApiTokenValidation.Domain\Orange.ApiTokenValidation.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.4" />
+  </ItemGroup>
+
 </Project>

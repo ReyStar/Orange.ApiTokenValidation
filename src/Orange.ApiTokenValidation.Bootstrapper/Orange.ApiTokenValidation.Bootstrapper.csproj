@@ -53,6 +53,7 @@
     <ProjectReference Include="..\Orange.ApiTokenValidation.API\Orange.ApiTokenValidation.API.csproj" />
     <ProjectReference Include="..\Orange.ApiTokenValidation.Common\Orange.ApiTokenValidation.Common.csproj" />
     <ProjectReference Include="..\Orange.ApiTokenValidation.Domain\Orange.ApiTokenValidation.Domain.csproj" />
+    <ProjectReference Include="..\Orange.ApiTokenValidation.Metrics\Orange.ApiTokenValidation.Metrics.csproj" />
     <ProjectReference Include="..\Orange.ApiTokenValidation.Notification\Orange.ApiTokenValidation.Notification.csproj" />
     <ProjectReference Include="..\Orange.ApiTokenValidation.Repositories\Orange.ApiTokenValidation.Repositories.csproj" />
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 namespace Orange.ApiTokenValidation.Notification
 {
-    class TokenNotifier: ITokenNotifier
+    internal class TokenNotifier: ITokenNotifier
     {
     }
 }

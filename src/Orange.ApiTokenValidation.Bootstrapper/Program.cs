@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -15,11 +16,16 @@ namespace Orange.ApiTokenValidation.Bootstrapper
 {
     public class Program
     {
-        public static Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            return CreateHostBuilder(args).Build()
-                .RunAsync();
+            var builder = CreateHostBuilder(args);
+            await builder.Build().RunAsync();
+            _container?.Dispose();
+
+            await Task.Delay(10000);
         }
+
+        static IDisposable _container;
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
@@ -32,9 +38,12 @@ namespace Orange.ApiTokenValidation.Bootstrapper
                     builder.RegisterModule<Domain.Registration.AutofacModule>();
                     builder.RegisterModule<Repositories.Registration.AutofacModule>();
                     builder.RegisterModule<API.Registration.AutofacModule>();
+                    builder.RegisterModule<Notification.Registration.AutofacModule>();
+                    builder.RegisterModule<Metrics.Registration.AutofacModule>();
 
                     builder.RegisterAutoMapper();
                 }))
+                .ConfigureContainer<ContainerBuilder>((_, cb) => cb.RegisterBuildCallback(c => _container = c))
                 .ConfigureAppConfiguration((context, builder) =>
                 {
                     builder.AddCommandLine(args);

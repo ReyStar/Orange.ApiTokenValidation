@@ -10,6 +10,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Orange.ApiTokenValidation.API;
 using Orange.ApiTokenValidation.Common;
 using Orange.ApiTokenValidation.Domain;
+using Orange.ApiTokenValidation.Notification;
 using Orange.ApiTokenValidation.Repositories;
 
 namespace Orange.ApiTokenValidation.Bootstrapper
@@ -34,6 +35,7 @@ namespace Orange.ApiTokenValidation.Bootstrapper
                 {
                     builder.RegisterConfiguration<DataSourceConfiguration>();
                     builder.RegisterConfiguration<TokenServiceConfiguration>();
+                    builder.RegisterConfiguration<TokenNotifierConfig>();
 
                     builder.RegisterModule<Domain.Registration.AutofacModule>();
                     builder.RegisterModule<Repositories.Registration.AutofacModule>();

@@ -10,6 +10,8 @@ namespace Orange.ApiTokenValidation.Notification.Registration
             base.Load(builder);
 
             builder.RegisterType<TokenNotifier>().As<ITokenNotifier>().SingleInstance();
+
+            builder.RegisterBuildCallback(x => x.Resolve<ITokenNotifier>());
         }
     }
 }

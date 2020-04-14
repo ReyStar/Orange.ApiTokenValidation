@@ -2,7 +2,7 @@
 
 namespace Orange.ApiTokenValidation.Domain
 {
-    public class TokenServiceConfiguration
+    internal class TokenServiceConfiguration
     {
         /// <summary>
         /// Time out of sync between servers

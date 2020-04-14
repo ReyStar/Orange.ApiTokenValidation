@@ -1,1 +1,0 @@
-﻿DELETE from public.tokentable where issuer = @issuer and audience = @audience;

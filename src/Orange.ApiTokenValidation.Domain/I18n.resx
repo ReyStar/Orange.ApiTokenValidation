@@ -153,4 +153,16 @@
   <data name="TokenToOtherAudienceError" xml:space="preserve">
     <value>Token to other audience error</value>
   </data>
+  <data name="IncorrectAudienceLength" xml:space="preserve">
+    <value>Incorrect audience length. Audience length must be between {0} and {1}.</value>
+  </data>
+  <data name="IncorrectIssuerLength" xml:space="preserve">
+    <value>Incorrect issuer length. Issuer length must be between {0} and {1}.</value>
+  </data>
+  <data name="IncorrectPrivateKeyLength" xml:space="preserve">
+    <value>Incorrect private key length. Private key length must be between {0} and {1}.</value>
+  </data>
+  <data name="IncorrectTtlValue" xml:space="preserve">
+    <value>Incorrect ttl value. Ttl must be between {0} and {1}.</value>
+  </data>
 </root>

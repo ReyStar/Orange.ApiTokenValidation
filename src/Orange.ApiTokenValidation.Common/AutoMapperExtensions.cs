@@ -1,27 +1,25 @@
 ﻿using System.Collections.Generic;
-using Autofac;
+//using Autofac;
 using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Orange.ApiTokenValidation.Common
 {
     public static class AutoMapperExtensions
     {
-        public static void RegisterAutoMapper(this ContainerBuilder builder)
+        public static void RegisterAutoMapper(this IServiceCollection collection)
         {
-            builder.Register(c => new MapperConfiguration(cfg =>
-                {
-                    //add your profiles (either resolve from container or however else you acquire them)
-                    foreach (var profile in c.Resolve<IEnumerable<Profile>>())
-                    {
-                        cfg.AddProfile(profile);
-                    }
-                })).AsSelf()
-                .SingleInstance();
+            collection.Add(new ServiceDescriptor(typeof(IMapper), sp =>
+            {
+                var profiles = sp.GetRequiredService<IEnumerable<Profile>>();
 
-            builder.Register(c => c.Resolve<MapperConfiguration>()
-                    .CreateMapper(c.Resolve))
-                .As<IMapper>()
-                .InstancePerLifetimeScope();
+                var configuration = new MapperConfiguration(cfg => { cfg.AddProfiles(profiles); });
+
+                var mapper = configuration.CreateMapper();
+
+                return mapper;
+
+            }, ServiceLifetime.Singleton));
         }
     }
 }

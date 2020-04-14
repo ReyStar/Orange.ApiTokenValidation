@@ -6,8 +6,8 @@
     public class TokenValidationResponse
     {
         /// <summary>
-        /// ExpirationDate
+        /// Expiration in seconds
         /// </summary>
-        public int ExpirationDate { get; set; }
+        public double Expiration { get; set; }
     }
 }

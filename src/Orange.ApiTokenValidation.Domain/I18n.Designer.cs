@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace Orange.ApiTokenValidation.Domain {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -54,6 +57,42 @@ namespace Orange.ApiTokenValidation.Domain {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect audience length. Audience length must be between {0} and {1}..
+        /// </summary>
+        internal static string IncorrectAudienceLength {
+            get {
+                return ResourceManager.GetString("IncorrectAudienceLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect issuer length. Issuer length must be between {0} and {1}..
+        /// </summary>
+        internal static string IncorrectIssuerLength {
+            get {
+                return ResourceManager.GetString("IncorrectIssuerLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect private key length. Private key length must be between {0} and {1}..
+        /// </summary>
+        internal static string IncorrectPrivateKeyLength {
+            get {
+                return ResourceManager.GetString("IncorrectPrivateKeyLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect ttl value. Ttl must be between {0} and {1}..
+        /// </summary>
+        internal static string IncorrectTtlValue {
+            get {
+                return ResourceManager.GetString("IncorrectTtlValue", resourceCulture);
             }
         }
         

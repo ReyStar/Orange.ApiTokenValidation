@@ -23,6 +23,7 @@ namespace Orange.ApiTokenValidation.API.Configuration
                     // note: this option is only necessary when version by url segment. the SubstitutionFormat
                     // can also be used to control the format of the API version in route templates
                     options.SubstituteApiVersionInUrl = true;
+                    options.AssumeDefaultVersionWhenUnspecified = true;
                 });
         }
     }

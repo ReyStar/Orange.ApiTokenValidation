@@ -1,16 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using AutoFixture;
 using AutoFixture.NUnit3;
-using Dapper;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json.Linq;
-using Npgsql;
 using NUnit.Framework;
 using Orange.ApiTokenValidation.Common;
 using Orange.ApiTokenValidation.Domain.Interfaces;
@@ -20,10 +19,8 @@ namespace Orange.ApiTokenValidation.Repositories.Tests
 {
     public class TokenRepositoryTests
     {
-        private string _testDataBase;
-        private ITokenRepository _tokenRepository;
+        private readonly ITokenRepository _tokenRepository;
         private readonly Fixture _fixture = new Fixture();
-        private readonly string _connectionString;
 
         public TokenRepositoryTests()
         {
@@ -31,31 +28,22 @@ namespace Orange.ApiTokenValidation.Repositories.Tests
                                                           .AddJsonFile("appsettings.json")
                                                           .AddEnvironmentVariables()
                                                           .Build();
+            var hostContext = new HostBuilderContext(new Dictionary<object, object>())
+            {
+                Configuration = configuration
+            };
 
-            _connectionString = configuration.GetConnectionString("TokenDB");
-        }
+            var services = new ServiceCollection();
+            services.RegisterRepositoriesDependencies(hostContext);
+            services.RegisterCommonDependencies(hostContext);
+            services.RegisterAutoMapper();
+            var container = services.BuildServiceProvider();
 
-        [OneTimeSetUp]
-        public async Task InitializeAsync()
-        {
-            _testDataBase = Guid.NewGuid().ToString();
-            await CreateTestDbAsync();
-
-            var connectionStringBuilder = new NpgsqlConnectionStringBuilder(_connectionString)
-                                          {
-                                              Database = _testDataBase
-                                          };
-            _tokenRepository = CreateRepository(connectionStringBuilder.ToString());
-        }
-
-        [OneTimeTearDown]
-        public async Task ShutdownAsync()
-        {
-            await DropTestDbAsync();
+            _tokenRepository = container.GetService<ITokenRepository>();
         }
 
         [Test]
-        public async Task CreateAndGet_Successful()
+        public async Task CreateAndGetEntity_Test()
         {
             // Arrange
             var tokenDescriptor = GenerateTokenDescriptor();
@@ -67,12 +55,12 @@ namespace Orange.ApiTokenValidation.Repositories.Tests
 
             // Assert
             result.Should().BeEquivalentTo(tokenDescriptor, x => x.Excluding(y => y.ExpirationDate));
-            result.ExpirationDate.Should().BeCloseTo(tokenDescriptor.ExpirationDate, TimeSpan.FromMilliseconds(0.001));
+            result.ExpirationDate.Should().BeCloseTo(tokenDescriptor.ExpirationDate.Value, TimeSpan.FromMilliseconds(0.001));
         }
 
         [Test]
         [AutoData]
-        public async Task Get_NotFound(string issuer, string audience)
+        public async Task GetNotExistEntity_Test(string issuer, string audience)
         {
             // Arrange
             // Act
@@ -83,7 +71,7 @@ namespace Orange.ApiTokenValidation.Repositories.Tests
         }
 
         [Test]
-        public async Task MultiCreateAndGetAll()
+        public async Task MultiCreateAndGetAllEntities_Test()
         {
             // Arrange
             var tokenDescriptors = _fixture.Build<TokenDescriptor>()
@@ -105,39 +93,43 @@ namespace Orange.ApiTokenValidation.Repositories.Tests
         }
 
         [Test]
-        public async Task Update_Successful()
+        public async Task UpdateExistEntity_Test()
         {
             // Arrange
             var originalTokenDescriptor = GenerateTokenDescriptor();
-            await _tokenRepository.AddAsync(originalTokenDescriptor);
+            var issuer = originalTokenDescriptor.Issuer;
+            var audience = originalTokenDescriptor.Audience;
+
+            var addedResult = await _tokenRepository.AddAsync(originalTokenDescriptor);
+            addedResult.Should().BeTrue();
 
             var newTokenDescriptor = GenerateTokenDescriptor();
 
             // Act
-            var result = await _tokenRepository.UpdateAsync(originalTokenDescriptor.Issuer, originalTokenDescriptor.Audience, newTokenDescriptor);
+            var result = await _tokenRepository.AddOrUpdateAsync(issuer, audience, newTokenDescriptor);
 
             // Assert
             result.Should().BeTrue();
-            var oldInsertedResult = await _tokenRepository.GetAsync(originalTokenDescriptor.Issuer, originalTokenDescriptor.Audience);
-            oldInsertedResult.Should().BeNull();
 
-            var resultOfUpdate = await _tokenRepository.GetAsync(newTokenDescriptor.Issuer, newTokenDescriptor.Audience);
+            var resultOfUpdate = await _tokenRepository.GetAsync(issuer, audience);
             resultOfUpdate.Should().NotBeNull();
+            newTokenDescriptor.Issuer = issuer;
+            newTokenDescriptor.Audience = audience;
             BeEquivalentTo(resultOfUpdate, newTokenDescriptor);
         }
 
         [Test]
         [AutoData]
-        public async Task Update_NotFound(string issuer, string audience)
+        public async Task UpdateNotExistEntity_Test(string issuer, string audience)
         {
             // Arrange
             var newTokenDescriptor = GenerateTokenDescriptor();
 
             // Act
-            var result = await _tokenRepository.UpdateAsync(issuer, audience, newTokenDescriptor);
+            var result = await _tokenRepository.AddOrUpdateAsync(issuer, audience, newTokenDescriptor);
 
             // Assert
-            result.Should().BeFalse();
+            result.Should().BeTrue();
             var newInsertedResult = await _tokenRepository.GetAsync(newTokenDescriptor.Issuer, newTokenDescriptor.Audience);
             newInsertedResult.Should().BeNull();
         }
@@ -160,7 +152,7 @@ namespace Orange.ApiTokenValidation.Repositories.Tests
 
         [Test]
         [AutoData]
-        public async Task Delete_NotFound(string issuer, string audience)
+        public async Task DeleteNotExistEntity_Test(string issuer, string audience)
         {
             // Arrange
 
@@ -170,51 +162,7 @@ namespace Orange.ApiTokenValidation.Repositories.Tests
             // Assert
             result.Should().BeFalse();
         }
-
-        private async Task CreateTestDbAsync(CancellationToken cancellationToken = default)
-        {
-            var createDBScript = await SqlScriptLoader.LoadAsync("CreateTokenDB");
-            var createTokenTableScript = await SqlScriptLoader.LoadAsync("CreateTokenTable");
-            await using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                var createDbCommand = new CommandDefinition(string.Format(createDBScript, _testDataBase, connection.UserName),
-                                                            cancellationToken: cancellationToken);
-                await connection.ExecuteAsync(createDbCommand);
-                await connection.OpenAsync(cancellationToken);
-                await connection.ChangeDatabaseAsync(_testDataBase, cancellationToken);
-
-                var createTokenTableCommandDefinition = new CommandDefinition(createTokenTableScript, cancellationToken: cancellationToken);
-                await connection.ExecuteAsync(createTokenTableCommandDefinition);
-            }
-        }
-
-        private ITokenRepository CreateRepository(string connectionString)
-        {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterInstance(new DataSourceConfiguration
-            {
-                ConnectionString = connectionString
-            });
-
-            builder.RegisterModule<Registration.AutofacModule>();
-            builder.RegisterAutoMapper();
-            var container = builder.Build();
-
-            return container.Resolve<ITokenRepository>();
-        }
-
-        private async Task DropTestDbAsync(CancellationToken cancellationToken = default)
-        {
-            var dropDBScript = await SqlScriptLoader.LoadAsync("DropTokenDB");
-            await using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                var createDbCommand = new CommandDefinition(string.Format(dropDBScript, _testDataBase), 
-                                                            cancellationToken: cancellationToken);
-                await connection.ExecuteAsync(createDbCommand);
-            }
-        }
-
+      
         private TokenDescriptor GenerateTokenDescriptor()
         {
             return _fixture.Build<TokenDescriptor>()
@@ -225,7 +173,7 @@ namespace Orange.ApiTokenValidation.Repositories.Tests
         private void BeEquivalentTo(TokenDescriptor tokenDescriptor, TokenDescriptor otherTokenDescriptor)
         {
             tokenDescriptor.Should().BeEquivalentTo(otherTokenDescriptor, x => x.Excluding(y => y.ExpirationDate));
-            tokenDescriptor.ExpirationDate.Should().BeCloseTo(otherTokenDescriptor.ExpirationDate, TimeSpan.FromMilliseconds(0.001));
+            tokenDescriptor.ExpirationDate.Should().BeCloseTo(otherTokenDescriptor.ExpirationDate.Value, TimeSpan.FromMilliseconds(0.001));
         }
     }
 }

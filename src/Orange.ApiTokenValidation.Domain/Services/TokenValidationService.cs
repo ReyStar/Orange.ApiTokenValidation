@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EnsureThat;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Orange.ApiTokenValidation.Domain.Exceptions;
 using Orange.ApiTokenValidation.Domain.Interfaces;
@@ -19,17 +20,16 @@ namespace Orange.ApiTokenValidation.Domain.Services
 
         public TokenValidationService(ITokenRepository tokenRepository,
                                       ITokenGenerator tokenGenerator,
-                                      TokenServiceConfiguration configuration)
+                                      IOptions<TokenServiceConfiguration> configuration)
         {
             _tokenRepository = tokenRepository;
             _tokenGenerator = tokenGenerator;
-            _configuration = configuration;
+            _configuration = configuration.Value;
             _tokenHandler = new JwtSecurityTokenHandler();
         }
 
-        public async Task<TokenValidationResult> ValidateAsync(string audience, TokenModel tokenModel, CancellationToken cancellationToken = default)
+        public async Task<Models.TokenValidationResult> ValidateAsync(string audience, TokenModel tokenModel, CancellationToken cancellationToken = default)
         {
-            
             EnsureArg.IsNotNullOrWhiteSpace(audience, nameof(audience));
             EnsureArg.IsNotNull(tokenModel, nameof(tokenModel));
             var token = tokenModel.Value;
@@ -68,9 +68,9 @@ namespace Orange.ApiTokenValidation.Domain.Services
                 throw new TokenValidationException(I18n.TokenTtlLarge);
             }
 
-            return new TokenValidationResult
+            return new Models.TokenValidationResult
             {
-                Expiration = (long)(securityToken.ValidTo - securityToken.ValidFrom).TotalSeconds
+                Expiration = (securityToken.ValidTo - securityToken.ValidFrom).TotalSeconds
             };
         }
 

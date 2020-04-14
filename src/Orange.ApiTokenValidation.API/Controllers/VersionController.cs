@@ -1,14 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
+using Orange.ApiTokenValidation.API.Attributes;
 
 namespace Orange.ApiTokenValidation.API.Controllers
 {
     /// <summary>
     /// Version controller
     /// </summary>
-    [RequireHttps]
+    [ApiController]
     [Route("[controller]")]
+    [RequireHttps]
+    [NullModelValidation]
+    [ValidateModel]
+    [AdvertiseApiVersions]//for ignore api version require
     public class VersionController : Controller
     {
         private readonly ILogger _logger;
@@ -27,16 +33,13 @@ namespace Orange.ApiTokenValidation.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetVersion()
         {
-            using (_logger.BeginScope("CorrelationID"))
-            {
-                _logger.LogInformation("Version request");
+            var version = PlatformServices.Default.Application.ApplicationVersion;
 
-                var version = PlatformServices.Default.Application.ApplicationVersion;
-
-                return Ok(version);
-            }
+            return Ok(version);
         }
     }
 }

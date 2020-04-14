@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.NUnit3;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
 using NUnit.Framework;
@@ -27,7 +28,7 @@ namespace Orange.ApiTokenValidation.Domain.Tests
         private ITokenValidationService _tokenService;
         private const int PasswordLength = 256;
         private Mock<ITokenRepository> _tokenRepository;
-        private TokenServiceConfiguration _tokenServiceConfiguration;
+        private Mock<IOptions<TokenServiceConfiguration>> _tokenServiceConfiguration;
         private TokenDescriptor _tokenDescriptor;
         private readonly Fixture _fixture;
         private SecurityToken _token;
@@ -52,11 +53,6 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             _issuer = _fixture.Create<string>();
             _audience = _fixture.Create<string>();
 
-            _tokenServiceConfiguration = new TokenServiceConfiguration
-            {
-                ClockSkew = TimeSpan.Zero,
-            };
-
             _tokenDescriptor = new TokenDescriptor
             {
                 Issuer = _issuer,
@@ -75,8 +71,16 @@ namespace Orange.ApiTokenValidation.Domain.Tests
             _token = _tokenGenerator.CreateToken(_issuer, _audience, _privateKey, _ttl);
             var stringToken = _handler.WriteToken(_token);
             _tokenModel = new TokenModel(stringToken);
+            
+            var configurationOptions = new TokenServiceConfiguration
+            {
+                ClockSkew = TimeSpan.Zero,
+            };
 
-            _tokenService = new TokenValidationService(_tokenRepository.Object, _tokenGenerator, _tokenServiceConfiguration);
+            _tokenServiceConfiguration = new Mock<IOptions<TokenServiceConfiguration>>();
+            _tokenServiceConfiguration.Setup(x => x.Value).Returns(configurationOptions);
+
+            _tokenService = new TokenValidationService(_tokenRepository.Object, _tokenGenerator, _tokenServiceConfiguration.Object);
         }
 
         [Test]

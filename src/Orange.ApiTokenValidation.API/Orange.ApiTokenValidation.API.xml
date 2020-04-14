@@ -4,21 +4,26 @@
         <name>Orange.ApiTokenValidation.API</name>
     </assembly>
     <members>
-        <member name="T:Orange.ApiTokenValidation.API.Configuration.ConfigureSwaggerOptions">
+        <member name="T:Orange.ApiTokenValidation.API.Attributes.OrangeApiVersionAttribute">
+            <summary>
+            Api version attribute, use only definition api versions
+            </summary>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Auth.OrangeJwtAuthenticationHandler">
+            <summary>
+            Custom auth header
+            https://joonasw.net/view/creating-auth-scheme-in-aspnet-core-2
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Auth.OrangeJwtAuthenticationHandler.#ctor(Microsoft.Extensions.Options.IOptionsMonitor{Orange.ApiTokenValidation.API.Auth.OrangeJwtAuthenticationSchemeOptions},Microsoft.Extensions.Logging.ILoggerFactory,System.Text.Encodings.Web.UrlEncoder,Microsoft.AspNetCore.Authentication.ISystemClock,Orange.ApiTokenValidation.Domain.Interfaces.ITokenValidationService,Microsoft.Extensions.Options.IOptions{Orange.ApiTokenValidation.Common.CommonConfiguration})">
+            <summary>
+            .ctor
+            </summary>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Configuration.SwaggerConfig">
             <summary>
             Configures the Swagger generation options.
             </summary>
-            <remarks>This allows API version to define a Swagger document per API version after the
-            <see cref="T:Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider"/> service has been resolved from the service container.</remarks>
-        </member>
-        <member name="M:Orange.ApiTokenValidation.API.Configuration.ConfigureSwaggerOptions.#ctor(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Orange.ApiTokenValidation.API.Configuration.ConfigureSwaggerOptions"/> class.
-            </summary>
-            <param name="provider">The <see cref="T:Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider">provider</see> used to generate Swagger documents.</param>
-        </member>
-        <member name="M:Orange.ApiTokenValidation.API.Configuration.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
-            <inheritdoc />
         </member>
         <member name="T:Orange.ApiTokenValidation.API.Configuration.FormatterConfig">
             <summary>
@@ -30,23 +35,71 @@
             Registration newtonjson media formatter
             </summary>
         </member>
-        <member name="T:Orange.ApiTokenValidation.API.Configuration.SwaggerConfig">
+        <member name="T:Orange.ApiTokenValidation.API.Controllers.ApiVersions">
             <summary>
-            Swagger UI configuration
+            Api versions fot api
             </summary>
         </member>
-        <member name="M:Orange.ApiTokenValidation.API.Configuration.SwaggerConfig.ConfigureSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Swagger configuration
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenRequest.PrivateKey">
+            <summary> 
+            Security key.
+            Can ignore this property if want generate key is automation
             </summary>
-            <param name="services"></param>
         </member>
-        <member name="M:Orange.ApiTokenValidation.API.Configuration.SwaggerDefaultValues.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
-            <summary>
-            Applies the filter to the specified operation using the given context.
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenRequest.Ttl">
+            <summary> 
+            Default TTL in seconds.
+            Time of live token, when it time is over,
+            need refresh token
             </summary>
-            <param name="operation">The operation to apply the filter to.</param>
-            <param name="context">The current operation filter context.</param>
+        </member>
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenRequest.ExpirationDate">
+            <summary> 
+            Expiration date (UTC time).
+            Set concrete date when union of audience and issuer will be invalid
+            </summary>
+        </member>
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenRequest.IsActive">
+            <summary>  
+            A sign whether a connection of the client to the resource is allowed. 
+            </summary>
+        </member>
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenRequest.PayLoad">
+            <summary>
+            Some addition info
+            </summary>
+        </member>
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenResponse.Issuer">
+            <summary> 
+            Target system
+            Issuer
+            </summary>
+        </member>
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenResponse.Audience">
+            <summary> 
+            External users
+            Audience
+            </summary>
+        </member>
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenResponse.Ttl">
+            <summary> 
+            Default TTL. 
+            </summary>
+        </member>
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenResponse.ExpirationDate">
+            <summary> 
+            Expiration date (UTC time). 
+            </summary>
+        </member>
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenResponse.IsActive">
+            <summary>  
+            A sign whether a connection of the client to the resource is allowed. 
+            </summary>
+        </member>
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenResponse.PayLoad">
+            <summary>
+            Some addition info
+            </summary>
         </member>
         <member name="T:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenValidationRequest">
             <summary>
@@ -63,9 +116,39 @@
             Response on validation
             </summary>
         </member>
-        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenValidationResponse.ExpirationDate">
+        <member name="P:Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenValidationResponse.Expiration">
             <summary>
-            ExpirationDate
+            Expiration in seconds
+            </summary>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Controllers.V1.TokenManagementController">
+            <summary>
+            Token management controller
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenManagementController.#ctor(Orange.ApiTokenValidation.Domain.Interfaces.ITokenManagementService,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Controllers.V1.TokenManagementController})">
+            <summary>
+            .ctor
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenManagementController.GetTokenAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            ValidateAsync request
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenManagementController.AddTokenAsync(System.String,System.String,Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenRequest,System.Threading.CancellationToken)">
+            <summary>
+            Add api token
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenManagementController.AddOrUpdateTokenAsync(System.String,System.String,Orange.ApiTokenValidation.API.Controllers.V1.DTO.TokenRequest,System.Threading.CancellationToken)">
+            <summary>
+            Add or update api token
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenManagementController.RemoveTokenAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Remove exist api token
             </summary>
         </member>
         <member name="T:Orange.ApiTokenValidation.API.Controllers.V1.TokenValidationController">
@@ -99,6 +182,16 @@
             Application version
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:Orange.ApiTokenValidation.API.Filters.KnownExceptionFilter">
+            <summary>
+            Filter fro catch known domain exception
+            </summary>
+        </member>
+        <member name="M:Orange.ApiTokenValidation.API.Filters.KnownExceptionFilter.#ctor(Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Filters.KnownExceptionFilter})">
+            <summary>
+            .ctor
+            </summary>
         </member>
         <member name="T:Orange.ApiTokenValidation.API.Filters.OperationCancelledExceptionFilter">
             https://andrewlock.net/using-cancellationtokens-in-asp-net-core-mvc-controllers/
@@ -137,14 +230,9 @@
             Write request metrics
             </summary>
         </member>
-        <member name="M:Orange.ApiTokenValidation.API.Middleware.RequestWriterMiddleware.#ctor(Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Middleware.RequestWriterMiddleware})">
+        <member name="M:Orange.ApiTokenValidation.API.Middleware.RequestWriterMiddleware.#ctor(Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Middleware.RequestWriterMiddleware},Orange.ApiTokenValidation.Domain.Interfaces.IMeasurer)">
             <summary>
             .ctor
-            </summary>
-        </member>
-        <member name="T:Orange.ApiTokenValidation.API.Services.HeartbeatService">
-            <summary>
-            Heartbeat service
             </summary>
         </member>
         <member name="T:Orange.ApiTokenValidation.API.Startup">

@@ -1,7 +1,9 @@
-﻿namespace Orange.ApiTokenValidation.Domain.Interfaces
+﻿using Orange.ApiTokenValidation.Domain.NotifyMessages;
+
+namespace Orange.ApiTokenValidation.Domain.Interfaces
 {
     public interface ITokenNotifier
     {
-        void Notify();
+        void Notify(TokenNotifyMessage message);
     }
 }

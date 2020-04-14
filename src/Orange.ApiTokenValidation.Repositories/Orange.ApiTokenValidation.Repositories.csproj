@@ -1,40 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <UserSecretsId>a52b48b2-e335-4730-a408-276102e50b5f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="SQL\CreateTokenDB.sql" />
-    <None Remove="SQL\CreateTokenTable.sql" />
-    <None Remove="SQL\DropTokenDB.sql" />
-    <None Remove="SQL\TokenTableDelete.sql" />
-    <None Remove="SQL\TokenTableInsert.sql" />
-    <None Remove="SQL\TokenTableSelect.sql" />
-    <None Remove="SQL\TokenTableSelectByIssuerAndAudience.sql" />
-    <None Remove="SQL\TokenTableUpdate.sql" />
+    <None Remove="Repositories\SQL\TokenTableUpdate.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="SQL\DropTokenDB.sql" />
-    <EmbeddedResource Include="SQL\TokenTableInsert.sql" />
-    <EmbeddedResource Include="SQL\TokenTableSelect.sql" />
-    <EmbeddedResource Include="SQL\TokenTableSelectByIssuerAndAudience.sql" />
-    <EmbeddedResource Include="SQL\CreateTokenDB.sql" />
-    <EmbeddedResource Include="SQL\CreateTokenTable.sql" />
-    <EmbeddedResource Include="SQL\TokenTableUpdate.sql" />
+    <EmbeddedResource Include="Repositories\SQL\TokenTableUpdate.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Orange.ApiTokenValidation.Common\Orange.ApiTokenValidation.Common.csproj" />
     <ProjectReference Include="..\Orange.ApiTokenValidation.Domain\Orange.ApiTokenValidation.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="Dapper" Version="1.60.6" />
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Dapper.Dommel" Version="2.0.0.1" />
     <PackageReference Include="Dapper.FluentMap" Version="1.8.0" />
-    <PackageReference Include="Npgsql" Version="4.1.0-preview1" />
+    <PackageReference Include="Ensure.That" Version="8.2.0" />
+    <PackageReference Include="Npgsql" Version="4.1.3.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,7 +37,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="SQL\TokenTableDelete.sql" />
+    <Compile Update="I18n.Designer.cs">
+      <DependentUpon>I18n.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="I18n.resx">
+      <LastGenOutput>I18n.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

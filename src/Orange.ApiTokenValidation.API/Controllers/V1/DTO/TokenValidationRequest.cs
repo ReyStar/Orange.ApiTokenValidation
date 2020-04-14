@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 
 namespace Orange.ApiTokenValidation.API.Controllers.V1.DTO
 {
@@ -12,8 +11,6 @@ namespace Orange.ApiTokenValidation.API.Controllers.V1.DTO
         /// security token value
         /// </summary>
         [Required(AllowEmptyStrings = false)]
-        [JsonProperty(Required = Required.Always)]
-        [MinLength(1)]
         public string Token { get; set; }
     }
 }

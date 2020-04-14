@@ -14,7 +14,7 @@ namespace Orange.ApiTokenValidation.API.Attributes
             if (nullArgs.Any())
             {
                 context.Result = new BadRequestObjectResult(
-                    $"The argument cannot be null: {string.Join(", ", nullArgs.Select(x => x.Key))}");
+                    $"The argument can't be null: {string.Join(", ", nullArgs.Select(x => x.Key))}");
             }
         }
     }

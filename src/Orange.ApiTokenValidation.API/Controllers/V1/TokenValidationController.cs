@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Orange.ApiTokenValidation.API.Attributes;
 using Orange.ApiTokenValidation.API.Controllers.V1.DTO;
-using Orange.ApiTokenValidation.Domain.Exceptions;
 using Orange.ApiTokenValidation.Domain.Interfaces;
 using Orange.ApiTokenValidation.Domain.Models;
 
@@ -22,7 +19,7 @@ namespace Orange.ApiTokenValidation.API.Controllers.V1
     [RequireHttps]
     [NullModelValidation]
     [ValidateModel]
-    [ApiVersion("1")]
+    [OrangeApiVersion(ApiVersions.V1)]
     public class TokenValidationController : ControllerBase
     {
         private readonly ITokenValidationService _tokenValidationService;
@@ -55,21 +52,10 @@ namespace Orange.ApiTokenValidation.API.Controllers.V1
         {
             var tokenModel = _mapper.Map<TokenModel>(validationRequest);
             _logger.LogInformation("Validation request");
-            try
-            {
-                var result = await _tokenValidationService.ValidateAsync(audience, tokenModel, cancellationToken);
+            
+            var result = await _tokenValidationService.ValidateAsync(audience, tokenModel, cancellationToken);
 
-                return Ok(_mapper.Map<TokenValidationResponse>(result));
-            }
-            catch (TokenValidationException ex)
-            {
-                var validationProblem = new ValidationProblemDetails
-                {
-                    Detail = ex.Message
-                };
-
-                return ValidationProblem(validationProblem);
-            }
+            return Ok(_mapper.Map<TokenValidationResponse>(result));
         }
     }
 }

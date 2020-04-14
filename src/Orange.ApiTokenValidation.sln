@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Bootstrapper", "Orange.ApiTokenValidation.Bootstrapper\Orange.ApiTokenValidation.Bootstrapper.csproj", "{9750BB44-9C25-4B29-8596-093CB55D596B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.API", "Orange.ApiTokenValidation.API\Orange.ApiTokenValidation.API.csproj", "{C5EAD129-B104-489F-9478-785B877DF9EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Domain", "Orange.ApiTokenValidation.Domain\Orange.ApiTokenValidation.Domain.csproj", "{8554B80B-6B28-4EBB-A473-FDD8A80A9ECB}"
@@ -25,16 +23,26 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Metrics", "Orange.ApiTokenValidation.Metrics\Orange.ApiTokenValidation.Metrics.csproj", "{9FEEABA8-FAB9-4170-9033-4765E4F7F9D5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.ClientGenerator", "Client\ApiTokenValidationClientGenerator\Orange.ApiTokenValidation.ClientGenerator.csproj", "{387682F4-091E-4A32-8A93-0FB6EBB54387}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Repositories.EntityFramework", "Orange.ApiTokenValidation.Repositories.EntityFramework\Orange.ApiTokenValidation.Repositories.EntityFramework.csproj", "{6F501495-D991-4C4B-97AC-C99F6EE8C10A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{E7A829A3-45E4-41DF-B395-66F158981DC3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.DataBaseProducer", "Tools\Orange.ApiTokenValidation.DataBaseProduser\Orange.ApiTokenValidation.DataBaseProducer.csproj", "{C3B7AD0C-6711-4DE8-A8E0-9AEB913B493D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Shell", "Orange.ApiTokenValidation.Shell\Orange.ApiTokenValidation.Shell.csproj", "{DEB45848-1A00-4C4D-B635-909B1E366C24}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Repositories.EntityFramework.Tests", "Tests\Orange.ApiTokenValidation.Repositories.EntityFramework.Tests\Orange.ApiTokenValidation.Repositories.EntityFramework.Tests.csproj", "{D1ED7C37-D5DF-44F4-AD54-C8C2CD674965}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orange.ApiTokenValidation.Client", "Orange.ApiTokenValidation.Client\Orange.ApiTokenValidation.Client.csproj", "{5A4E4B82-655A-4D04-A7A2-E36F5B1AB9E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9750BB44-9C25-4B29-8596-093CB55D596B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9750BB44-9C25-4B29-8596-093CB55D596B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9750BB44-9C25-4B29-8596-093CB55D596B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9750BB44-9C25-4B29-8596-093CB55D596B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C5EAD129-B104-489F-9478-785B877DF9EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C5EAD129-B104-489F-9478-785B877DF9EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5EAD129-B104-489F-9478-785B877DF9EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -71,6 +79,30 @@ Global
 		{9FEEABA8-FAB9-4170-9033-4765E4F7F9D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FEEABA8-FAB9-4170-9033-4765E4F7F9D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FEEABA8-FAB9-4170-9033-4765E4F7F9D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{387682F4-091E-4A32-8A93-0FB6EBB54387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{387682F4-091E-4A32-8A93-0FB6EBB54387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{387682F4-091E-4A32-8A93-0FB6EBB54387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{387682F4-091E-4A32-8A93-0FB6EBB54387}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F501495-D991-4C4B-97AC-C99F6EE8C10A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F501495-D991-4C4B-97AC-C99F6EE8C10A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F501495-D991-4C4B-97AC-C99F6EE8C10A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F501495-D991-4C4B-97AC-C99F6EE8C10A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3B7AD0C-6711-4DE8-A8E0-9AEB913B493D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3B7AD0C-6711-4DE8-A8E0-9AEB913B493D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3B7AD0C-6711-4DE8-A8E0-9AEB913B493D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3B7AD0C-6711-4DE8-A8E0-9AEB913B493D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEB45848-1A00-4C4D-B635-909B1E366C24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEB45848-1A00-4C4D-B635-909B1E366C24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEB45848-1A00-4C4D-B635-909B1E366C24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEB45848-1A00-4C4D-B635-909B1E366C24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1ED7C37-D5DF-44F4-AD54-C8C2CD674965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1ED7C37-D5DF-44F4-AD54-C8C2CD674965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1ED7C37-D5DF-44F4-AD54-C8C2CD674965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1ED7C37-D5DF-44F4-AD54-C8C2CD674965}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A4E4B82-655A-4D04-A7A2-E36F5B1AB9E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A4E4B82-655A-4D04-A7A2-E36F5B1AB9E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A4E4B82-655A-4D04-A7A2-E36F5B1AB9E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A4E4B82-655A-4D04-A7A2-E36F5B1AB9E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +111,9 @@ Global
 		{FE4847D1-6B82-4E12-BB94-7CA09012D5D4} = {E77C93CD-D7A2-4C9F-BF29-9583621E5EEB}
 		{16CCB713-0618-47A6-9D50-9581AB94BAE3} = {E77C93CD-D7A2-4C9F-BF29-9583621E5EEB}
 		{E1D4C9A6-15D8-4710-A477-56CB090ECE01} = {E77C93CD-D7A2-4C9F-BF29-9583621E5EEB}
+		{387682F4-091E-4A32-8A93-0FB6EBB54387} = {E7A829A3-45E4-41DF-B395-66F158981DC3}
+		{C3B7AD0C-6711-4DE8-A8E0-9AEB913B493D} = {E7A829A3-45E4-41DF-B395-66F158981DC3}
+		{D1ED7C37-D5DF-44F4-AD54-C8C2CD674965} = {E77C93CD-D7A2-4C9F-BF29-9583621E5EEB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {90A95C32-7DF9-4750-B299-653F34F069DD}

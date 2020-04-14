@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Dapper;
+using Dapper.Dommel;
+using Orange.ApiTokenValidation.Common;
+using Orange.ApiTokenValidation.Domain.Exceptions;
 using Orange.ApiTokenValidation.Domain.Interfaces;
 using Orange.ApiTokenValidation.Domain.Models;
 using Orange.ApiTokenValidation.Repositories.Models;
@@ -13,93 +17,125 @@ namespace Orange.ApiTokenValidation.Repositories.Repositories
     {
         private readonly IDataSource _dataSource;
         private readonly IMapper _mapper;
-        private readonly string _tokenTableInsertScript;
-        private readonly string _tokenTableSelectScript;
         private readonly string _tokenTableUpdateScript;
-        private readonly string _tokenTableDeleteScript;
-        private readonly string _tokenTableSelectByIssuerAndAudienceScript;
 
         public TokenRepository(IDataSource dataSource, IMapper mapper)
         {
             _dataSource = dataSource;
             _mapper = mapper;
 
-            _tokenTableInsertScript = SqlScriptLoader.Load("TokenTableInsert");
-            _tokenTableSelectScript = SqlScriptLoader.Load("TokenTableSelect");
-            _tokenTableSelectByIssuerAndAudienceScript = SqlScriptLoader.Load("TokenTableSelectByIssuerAndAudience");
-            _tokenTableUpdateScript = SqlScriptLoader.Load("TokenTableUpdate");
-            _tokenTableDeleteScript = SqlScriptLoader.Load("TokenTableDelete");
+            var resourceLoader = new ResourceLoader(typeof(TokenRepository).Assembly);
+            _tokenTableUpdateScript = resourceLoader.LoadString($"{typeof(TokenRepository).Namespace}.SQL.TokenTableUpdate.sql");
         }
 
-        public async Task<TokenDescriptor> GetAsync(string issuer, string audience, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<TokenDescriptor> GetAsync(string issuer, string audience, CancellationToken cancellationToken = default)
         {
-            var commandDefinition = new CommandDefinition(_tokenTableSelectByIssuerAndAudienceScript,
-                parameters: new
-                {
-                    issuer = issuer,
-                    audience = audience
-                }, cancellationToken: cancellationToken);
+            try
+            {
+                var result =
+                    await _dataSource.Connection.FirstOrDefaultAsync<TokenDbModel>(
+                        x => x.Issuer == issuer
+                             && x.Audience == audience);
 
-            var result = await _dataSource.Connection.QueryFirstOrDefaultAsync<TokenDbModel>(commandDefinition);
-
-            return _mapper.Map<TokenDescriptor>(result);
+                return _mapper.Map<TokenDescriptor>(result);
+            }
+            catch (Exception ex)
+            {
+                throw new RepositoryException(I18n.GetOperationException, ex);
+            }
         }
 
-        public async Task<IEnumerable<TokenDescriptor>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IEnumerable<TokenDescriptor>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var commandDefinition = new CommandDefinition(_tokenTableSelectScript, cancellationToken: cancellationToken);
+            try
+            {
+                var result = await _dataSource.Connection.GetAllAsync<TokenDbModel>();
 
-            var result = await _dataSource.Connection.QueryAsync<TokenDbModel>(commandDefinition);
-
-            return _mapper.Map<IEnumerable<TokenDescriptor>>(result);
+                return _mapper.Map<IEnumerable<TokenDescriptor>>(result);
+            }
+            catch (Exception ex)
+            {
+                throw new RepositoryException(I18n.GetAllOperationException, ex);
+            }
         }
 
-        public async Task<bool> AddAsync(TokenDescriptor value, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> AddAsync(TokenDescriptor value, CancellationToken cancellationToken = default)
         {
-            var dbModel = _mapper.Map<TokenDbModel>(value);
+            try
+            {
+                var dbModel = _mapper.Map<TokenDbModel>(value);
+                UpdateDefaultProperties(dbModel);
+                dbModel.CreatedTime = DateTimeOffset.UtcNow;
+                dbModel.Creator = _dataSource.InstanceId;
 
-            var commandDefinition = new CommandDefinition(_tokenTableInsertScript,
-                parameters: new
-                {
-                    issuer = dbModel.Issuer,
-                    audience = dbModel.Audience,
-                    private_key = dbModel.PrivateKey,
-                    ttl = dbModel.Ttl,
-                    expiration_time = dbModel.ExpirationDate,
-                    is_active = dbModel.IsActive,
-                    payload = dbModel.PayLoad,
-
-                }, cancellationToken: cancellationToken);
-
-            return await _dataSource.Connection.ExecuteAsync(commandDefinition) > 0;
+                var key = await _dataSource.Connection.InsertAsync(dbModel);
+                return key != null;
+            }
+            catch (Exception ex)
+            {
+                throw new RepositoryException(I18n.AddOperationException, ex);
+            }
         }
 
-        public async Task<bool> UpdateAsync(string issuer, string audience, TokenDescriptor value, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> AddOrUpdateAsync(string issuer, string audience, TokenDescriptor value, CancellationToken cancellationToken = default)
         {
-            var dbModel = _mapper.Map<TokenDbModel>(value);
+            try
+            {
+                var dbModel = _mapper.Map<TokenDbModel>(value);
+                UpdateDefaultProperties(dbModel);
+                dbModel.Audience = audience;
+                dbModel.Issuer = issuer;
 
-            var commandDefinition = new CommandDefinition(_tokenTableUpdateScript,
-                parameters: new
-                {
-                    issuerKey = issuer,
-                    audienceKey = audience,
-                    issuer = dbModel.Issuer,
-                    audience = dbModel.Audience,
-                    private_key = dbModel.PrivateKey,
-                    ttl = dbModel.Ttl,
-                    expiration_time = dbModel.ExpirationDate,
-                    is_active = dbModel.IsActive,
-                    payload = dbModel.PayLoad,
-                }, cancellationToken: cancellationToken);
+                var commandDefinition = new CommandDefinition(_tokenTableUpdateScript,
+                    parameters: new
+                    {
+                        issuerKey = dbModel.Issuer,
+                        audienceKey = dbModel.Audience,
+                        issuer = dbModel.Issuer,
+                        audience = dbModel.Audience,
+                        private_key = dbModel.PrivateKey,
+                        ttl = dbModel.Ttl,
+                        expiration_time = dbModel.ExpirationDate,
+                        is_active = dbModel.IsActive,
+                        payload = dbModel.PayLoad,
+                        creator = dbModel.Creator,
+                        created_time = dbModel.CreatedTime,
+                        updated_time = DateTimeOffset.UtcNow,
+                        updater = dbModel.Updater,
+                    },
+                    cancellationToken: cancellationToken);
 
-            return await _dataSource.Connection.ExecuteAsync(commandDefinition) > 0;
+                return await _dataSource.Connection.ExecuteAsync(commandDefinition) > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new RepositoryException(I18n.AddOrUpdateOperationException, ex);
+            }
         }
 
-        public async Task<bool> DeleteAsync(string issuer, string audience, CancellationToken cancellationToken = default(CancellationToken))
+        /// <summary>
+        /// Hard delete entity from DB. In other version can change to soft delete
+        /// </summary>
+        public async Task<bool> DeleteAsync(string issuer, string audience, CancellationToken cancellationToken = default)
         {
-            var commandDefinition = new CommandDefinition(_tokenTableDeleteScript, new { issuer = issuer, audience = audience }, cancellationToken: cancellationToken);
+            try
+            {
+                return await _dataSource.Connection.DeleteMultipleAsync<TokenDbModel>(x => x.Audience == audience
+                                                                                           && x.Issuer == issuer);
+            }
+            catch (Exception ex)
+            {
+                throw new RepositoryException(I18n.DeleteOperationException, ex);
+            }
+        }
 
-            return await _dataSource.Connection.ExecuteAsync(commandDefinition) > 0;
+        private void UpdateDefaultProperties(TokenDbModel dbModel)
+        {
+            var currentTime = DateTimeOffset.UtcNow;
+            dbModel.UpdatedTime = currentTime;
+            dbModel.Updater = _dataSource.InstanceId;
+            dbModel.CreatedTime = currentTime;
+            dbModel.Creator = _dataSource.InstanceId;
         }
     }
 }

@@ -3,8 +3,8 @@
     public class TokenValidationResult
     {
         /// <summary> 
-        /// Expiration
+        /// Expiration in seconds
         /// </summary>
-        public long Expiration { get; set; }
+        public double Expiration { get; set; }
     }
 }

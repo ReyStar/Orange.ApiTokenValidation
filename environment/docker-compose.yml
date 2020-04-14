@@ -1,0 +1,82 @@
+version: '3.7'
+services:
+  postgres-server:    # The Postgres Database Service
+    image: postgres:latest
+    restart: always
+    environment:   # Username, password and database name variables
+      POSTGRES_USER: sqladmin
+      POSTGRES_PASSWORD: sqlpassword
+      # POSTGRES_DB: zabbix
+      # PG_DATA: /var/lib/postgresql/data/pgdata #data storage
+    ports:
+      - 2345:2345
+      - 5432:5432
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    ports:
+      - 5433:80
+    depends_on: 
+      - postgres-server 
+    restart: always
+  zookeeper-1:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper-1
+    restart: always
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: "2181"
+      ZOOKEEPER_TICK_TIME: "2000"
+      #ZOOKEEPER_SERVERS: "zookeeper:22888:23888"
+    ports:
+      - "2181:2181"
+  kafka-1:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka-1
+    depends_on:
+      - zookeeper-1
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper-1:2181"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_BROKER_ID: 1
+      KAFKA_BROKER_RACK: "r1"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_SCHEMA_REGISTRY_URL: "schemaregistry:8081"
+      #KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+      KAFKA_JMX_PORT: 9991
+  schemaregistry:
+    image: confluentinc/cp-schema-registry:latest
+    restart: always
+    depends_on:
+      - zookeeper-1
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper-1:2181"
+      SCHEMA_REGISTRY_HOST_NAME: schemaregistry
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+    ports:
+      - 8081:8081
+  restproxy:
+    image: confluentinc/cp-kafka-rest:latest
+    restart: always
+    depends_on:
+      - kafka-1
+    environment:
+      KAFKA_REST_ZOOKEEPER_CONNECT: "zookeeper-1:2181"
+      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+      KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schemaregistry:8081"
+      KAFKA_REST_HOST_NAME: restproxy
+      KAFKA_REST_DEBUG: "true"
+    ports:
+      - 8082:8082
+#https://github.com/confluentinc/kafka-workshop/blob/master/docker-compose.yml
+#https://github.com/confluentinc/docker-images/blob/master/examples/fullstack/docker-compose.yml
+#https://docs.confluent.io/current/installation/docker/config-reference.html

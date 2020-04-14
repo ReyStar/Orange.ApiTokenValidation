@@ -1,61 +1,80 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using NSwag;
+using NSwag.AspNetCore;
+using NSwag.Generation.AspNetCore;
+using NSwag.Generation.Processors.Security;
 
 namespace Orange.ApiTokenValidation.API.Configuration
 {
     /// <summary>
     /// Configures the Swagger generation options.
     /// </summary>
-    /// <remarks>This allows API version to define a Swagger document per API version after the
-    /// <see cref="IApiVersionDescriptionProvider"/> service has been resolved from the service container.</remarks>
-    public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+    public static class SwaggerConfig
     {
-        readonly IApiVersionDescriptionProvider provider;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigureSwaggerOptions"/> class.
-        /// </summary>
-        /// <param name="provider">The <see cref="IApiVersionDescriptionProvider">provider</see> used to generate Swagger documents.</param>
-        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => this.provider = provider;
-
-        /// <inheritdoc />
-        public void Configure(SwaggerGenOptions options)
+        public static IServiceCollection AddAllOpenApiDocumentWithVersions(this IServiceCollection serviceCollection)
         {
-            options.DescribeAllEnumsAsStrings();
-            // add a swagger document for each discovered API version
-            // note: you might choose to skip or document deprecated API versions differently
-            foreach (var description in provider.ApiVersionDescriptions)
+            serviceCollection.AddOpenApiDocument();// Register default providers (I don't do it manually)
+
+            //Register all documents
+            serviceCollection.AddSingleton<IEnumerable<OpenApiDocumentRegistration>>(provider =>
             {
-                options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
-            }
+                var versionProvider =
+                    (IApiVersionDescriptionProvider) provider.GetService(typeof(IApiVersionDescriptionProvider));
+                
+                var registrations = new List<OpenApiDocumentRegistration>();
+                
+                foreach (var apiVersionDescription in versionProvider.ApiVersionDescriptions)
+                {
+                    var versionValue = $"v{apiVersionDescription.ApiVersion.MajorVersion}";
+
+                    registrations.Add(new OpenApiDocumentRegistration(versionValue,
+                        new AspNetCoreOpenApiDocumentGenerator(GetGenerationSettings(versionValue))));
+                };
+
+                return registrations;
+            });
+
+            return serviceCollection;
         }
 
-        static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
+        private static AspNetCoreOpenApiDocumentGeneratorSettings GetGenerationSettings(string versionValue)
         {
-            var info = new OpenApiInfo
+            var documentSettings = new AspNetCoreOpenApiDocumentGeneratorSettings
+            {
+                DocumentName = versionValue,
+                ApiGroupNames = new[] {versionValue},
+                PostProcess = UpdateInfoForApiVersion
+            };
+
+            // Add an authenticate button to Swagger for JWT tokens
+            documentSettings.OperationProcessors.Add(new OperationSecurityScopeProcessor("JWT"));
+            documentSettings.DocumentProcessors.Add(new SecurityDefinitionAppender("JWT", new OpenApiSecurityScheme
+            {
+                Type = OpenApiSecuritySchemeType.ApiKey,
+                Name = "Authorization",
+                In = OpenApiSecurityApiKeyLocation.Header,
+                Description = "Type into the textbox: Bearer {your JWT token}."
+            }));
+
+            return documentSettings;
+        }
+
+        static void UpdateInfoForApiVersion(OpenApiDocument document)
+        {
+            document.Info = new OpenApiInfo
             {
                 Title = "Token validation",
-                Version = description.ApiVersion.ToString(),
-                Description = "A sample application",
+                Description = "Api token validation",
                 Contact = new OpenApiContact
                 {
                     Name = "Andrey Star",
                     Email = "starandrey@hotmail.com"
                 },
-                TermsOfService = new Uri("https://github.com/ReyStar/Orange.ApiTokenValidation"),
-                License = new OpenApiLicense { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
+                TermsOfService = "https://github.com/ReyStar/Orange.ApiTokenValidation",
+                License = new OpenApiLicense { Name = "MIT", Url = "https://opensource.org/licenses/MIT" }
             };
-
-            if (description.IsDeprecated)
-            {
-                info.Description += " This API version has been deprecated.";
-            }
-
-            return info;
         }
     }
 }

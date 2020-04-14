@@ -33,7 +33,7 @@ namespace Orange.ApiTokenValidation.Domain.Models
         /// <summary> 
         /// Expiration date (UTC time). 
         /// </summary>
-        public DateTimeOffset ExpirationDate { get; set; }
+        public DateTimeOffset? ExpirationDate { get; set; }
 
         /// <summary>  
         /// A sign whether a connection of the client to the resource is allowed. 

@@ -42,5 +42,25 @@ namespace Orange.ApiTokenValidation.Repositories.Models
         /// Some addition info
         /// </summary>
         public JObject PayLoad { get; set; }
+
+        /// <summary>
+        /// System field: CreatedTime
+        /// </summary>
+        public DateTimeOffset CreatedTime { get; set; }
+
+        /// <summary>
+        /// System field: Creator
+        /// </summary>
+        public string Creator { get; set; }
+
+        /// <summary>
+        /// System field: UpdatedTime
+        /// </summary>
+        public DateTimeOffset UpdatedTime { get; set; }
+
+        /// <summary>
+        /// System field: Updater
+        /// </summary>
+        public string Updater { get; set; }
     }
 }

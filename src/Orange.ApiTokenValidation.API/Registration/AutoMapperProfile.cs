@@ -12,6 +12,14 @@ namespace Orange.ApiTokenValidation.API.Registration
 
             CreateMap<Controllers.V1.DTO.TokenValidationRequest, TokenModel>()
                 .ForPath(x => x.Value, memberOptions => memberOptions.MapFrom(p => p.Token));
+
+            CreateMap<Controllers.V1.DTO.TokenRequest, TokenDescriptor>()
+                .ForPath(x => x.Audience, memberOptions => memberOptions.Ignore())
+                .ForPath(x => x.Issuer, memberOptions => memberOptions.Ignore());
+
+            CreateMap<TokenDescriptor, Controllers.V1.DTO.TokenResponse>();
+            
+            CreateMap<TokenValidationResult, Controllers.V1.DTO.TokenValidationResponse>();
         }
     }
 }

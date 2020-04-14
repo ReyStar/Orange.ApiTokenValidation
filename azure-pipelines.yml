@@ -22,12 +22,12 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: '**/src/Orange.ApiTokenValidation.Bootstrapper/*.csproj'
+    projects: '**/src/Orange.ApiTokenValidation.Shell/*.csproj'
     feedsToUse: 'select'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: '**/src/Orange.ApiTokenValidation.Bootstrapper/*.csproj'
+    projects: '**/src/Orange.ApiTokenValidation.Shell/*.csproj'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'

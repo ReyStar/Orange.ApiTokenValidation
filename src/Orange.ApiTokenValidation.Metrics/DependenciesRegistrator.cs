@@ -1,6 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Net.Http;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Orange.ApiTokenValidation.Common;
 using Orange.ApiTokenValidation.Domain.Interfaces;
 using Prometheus;
 
@@ -12,13 +18,14 @@ namespace Orange.ApiTokenValidation.Metrics
         {
             collection.AddSingleton<IMeasurer, Measurer>();
 
-            collection.AddHostedService<HeartbeatService>();
+            collection.Configure<MeasurerConfiguration>(hostBuilderContext.Configuration.GetSection(nameof(MeasurerConfiguration)));
         }
 
         public static void ConfigureMeasure(this IApplicationBuilder app)
         {
-            app.UseMetricServer();
+            var measurerConfiguration = app.ApplicationServices.GetService<IOptions<MeasurerConfiguration>>().Value;
             
+            app.UseMetricServer(measurerConfiguration.PullMetricsUrl);
             app.UseHttpMetrics();
         }
     }

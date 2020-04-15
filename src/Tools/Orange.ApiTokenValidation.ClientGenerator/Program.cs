@@ -36,19 +36,21 @@ namespace Orange.ApiTokenValidation.ClientGenerator
             if (string.IsNullOrWhiteSpace(documentPath)
                 || string.IsNullOrWhiteSpace(outputPath))
             {
-                Console.WriteLine($"Requested command line parameters must be set: {string.Join(", ", CommandLineKeyMappingDictionary.Keys)}");
+                Console.WriteLine("Requested command line parameters must be set.");
+                Console.WriteLine("-d input swagger.json document");
+                Console.WriteLine("-o output client file");
 
                 return 1;
             }
 
             try
             {
-                //TODO create OpenAPI doc here
+                ////TODO create OpenAPI doc here
                 //var settingsOpenApi = new WebApiOpenApiDocumentGeneratorSettings
                 //{
                 //    //DefaultUrlTemplate = "api/{controller}/{action}/{id}"
                 //};
-
+                
                 //Assembly.lo
 
                 //var generator = new WebApiOpenApiDocumentGenerator(settingsOpenApi);
@@ -67,8 +69,8 @@ namespace Orange.ApiTokenValidation.ClientGenerator
                     InjectHttpClient = true,
                     DisposeHttpClient = false,
                     GenerateDtoTypes = true,
+                    
                 };
-
 
                 var document = await OpenApiDocument.FromFileAsync(documentPath);
                 

@@ -33,9 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Repositories.EntityFramework.Tests", "Tests\Orange.ApiTokenValidation.Repositories.EntityFramework.Tests\Orange.ApiTokenValidation.Repositories.EntityFramework.Tests.csproj", "{D1ED7C37-D5DF-44F4-AD54-C8C2CD674965}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Client", "Orange.ApiTokenValidation.Client\Orange.ApiTokenValidation.Client.csproj", "{5A4E4B82-655A-4D04-A7A2-E36F5B1AB9E7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.ClientGenerator", "Tools\Orange.ApiTokenValidation.ClientGenerator\Orange.ApiTokenValidation.ClientGenerator.csproj", "{7F09A19A-DB6A-475B-A981-985D70FDA2E8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Client", "Tools\Orange.ApiTokenValidation.Client\Orange.ApiTokenValidation.Client.csproj", "{312CAA7B-8B62-4053-90A0-5226993FAE72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,14 +95,14 @@ Global
 		{D1ED7C37-D5DF-44F4-AD54-C8C2CD674965}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1ED7C37-D5DF-44F4-AD54-C8C2CD674965}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1ED7C37-D5DF-44F4-AD54-C8C2CD674965}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A4E4B82-655A-4D04-A7A2-E36F5B1AB9E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A4E4B82-655A-4D04-A7A2-E36F5B1AB9E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A4E4B82-655A-4D04-A7A2-E36F5B1AB9E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A4E4B82-655A-4D04-A7A2-E36F5B1AB9E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F09A19A-DB6A-475B-A981-985D70FDA2E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F09A19A-DB6A-475B-A981-985D70FDA2E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F09A19A-DB6A-475B-A981-985D70FDA2E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F09A19A-DB6A-475B-A981-985D70FDA2E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{312CAA7B-8B62-4053-90A0-5226993FAE72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{312CAA7B-8B62-4053-90A0-5226993FAE72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{312CAA7B-8B62-4053-90A0-5226993FAE72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{312CAA7B-8B62-4053-90A0-5226993FAE72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +114,7 @@ Global
 		{C3B7AD0C-6711-4DE8-A8E0-9AEB913B493D} = {E7A829A3-45E4-41DF-B395-66F158981DC3}
 		{D1ED7C37-D5DF-44F4-AD54-C8C2CD674965} = {E77C93CD-D7A2-4C9F-BF29-9583621E5EEB}
 		{7F09A19A-DB6A-475B-A981-985D70FDA2E8} = {E7A829A3-45E4-41DF-B395-66F158981DC3}
+		{312CAA7B-8B62-4053-90A0-5226993FAE72} = {E7A829A3-45E4-41DF-B395-66F158981DC3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {90A95C32-7DF9-4750-B299-653F34F069DD}

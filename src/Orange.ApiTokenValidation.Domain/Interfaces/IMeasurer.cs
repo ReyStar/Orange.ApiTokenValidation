@@ -4,7 +4,5 @@
     {
         void Heartbeat();
         void RequestMetric(string path, string method, int statusCode);
-
-        void Push();
     }
 }

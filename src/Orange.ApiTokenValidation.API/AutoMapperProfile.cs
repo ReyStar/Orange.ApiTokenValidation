@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Orange.ApiTokenValidation.Domain.Models;
 
-namespace Orange.ApiTokenValidation.API.Registration
+namespace Orange.ApiTokenValidation.API
 {
     internal class AutoMapperProfile : Profile
     {

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orange.ApiTokenValidation.Domain.Interfaces;
 
-namespace Orange.ApiTokenValidation.Metrics
+namespace Orange.ApiTokenValidation.Shell
 {
     class HeartbeatService: BackgroundService
     {
@@ -26,7 +26,8 @@ namespace Orange.ApiTokenValidation.Metrics
             {
                 try
                 {
-                    Heartbeat();
+                    _logger.LogDebug("Heartbeat");
+                    _measurer.Heartbeat();
                 }
                 catch (Exception ex)
                 {
@@ -35,13 +36,6 @@ namespace Orange.ApiTokenValidation.Metrics
 
                 await Task.Delay(_period, token);
             }
-        }
-
-        private void Heartbeat()
-        {
-            _logger.LogDebug("Heartbeat");
-            _measurer.Heartbeat();
-            _measurer.Push();
         }
     }
 }

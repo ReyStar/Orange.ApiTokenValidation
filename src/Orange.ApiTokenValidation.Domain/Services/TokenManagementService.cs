@@ -66,7 +66,7 @@ namespace Orange.ApiTokenValidation.Domain.Services
 
             await _tokenRepository.AddOrUpdateAsync(tokenDescriptor.Issuer, tokenDescriptor.Audience, tokenDescriptor, cancellationToken);
 
-            _notifier.Notify(new TokenUpdatedNotifyMessage(tokenDescriptor));
+            _notifier.Notify(new TokenUpdatedNotifyMessage(tokenDescriptor.Issuer, tokenDescriptor.Audience, tokenDescriptor.Ttl, tokenDescriptor.ExpirationDate, tokenDescriptor.IsActive));
         }
 
         public async Task<bool> RemoveTokenAsync(string issuer, string audience, CancellationToken cancellationToken)

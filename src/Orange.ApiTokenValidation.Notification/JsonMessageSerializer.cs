@@ -23,7 +23,7 @@ namespace Orange.ApiTokenValidation.Notification
             using var streamWriter = new StreamWriter(stream);
 
             JsonSerializer.Serialize(streamWriter, data);
-                
+
             return stream.ToArray();
         }
     }

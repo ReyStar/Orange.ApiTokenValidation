@@ -26,10 +26,10 @@ namespace Orange.ApiTokenValidation.Shell
                    var applicationPath = PlatformServices.Default.Application.ApplicationBasePath;
 
                    builder.SetBasePath(applicationPath)
-                        .AddJsonFile($"{AppSettingPrefix}.json", optional: false, reloadOnChange: true)
-                        .AddJsonFile($"{AppSettingPrefix}.{context.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                        .AddEnvironmentVariables(prefix: EnvironmentVariablesPrefix)
-                        .AddCommandLine(args);
+                          .AddJsonFile($"{AppSettingPrefix}.json", optional: false, reloadOnChange: true)
+                          .AddJsonFile($"{AppSettingPrefix}.{context.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                          .AddEnvironmentVariables(prefix: EnvironmentVariablesPrefix)
+                          .AddCommandLine(args);
                })
                .ConfigureWebHost(webBuilder =>
                {
@@ -49,6 +49,8 @@ namespace Orange.ApiTokenValidation.Shell
                    services.RegisterRepositoriesDependencies(context);
                    
                    services.RegisterAutoMapper();
+
+                   services.AddHostedService<HeartbeatService>();
                })
                .RegisterLogger()
                .UseSystemd();

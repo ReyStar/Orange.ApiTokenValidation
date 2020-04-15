@@ -11,7 +11,7 @@ namespace Orange.ApiTokenValidation.API.Tests
             // Arrange
             var mapperConfiguration = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<Registration.AutoMapperProfile>();
+                cfg.AddProfile<AutoMapperProfile>();
             });
 
             // Act & Assert

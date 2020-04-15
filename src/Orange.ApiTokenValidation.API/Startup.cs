@@ -60,10 +60,9 @@ namespace Orange.ApiTokenValidation.API
                               IWebHostEnvironment env,
                               IApiVersionDescriptionProvider provider)
         {
-            app.ConfigureMeasure();
-            
             app.UseMiddleware<CorrelationIdMiddleware>();
             app.UseMiddleware<RequestWriterMiddleware>();
+            app.ConfigureMeasure();
 
             if (env.IsDevelopment())
             {

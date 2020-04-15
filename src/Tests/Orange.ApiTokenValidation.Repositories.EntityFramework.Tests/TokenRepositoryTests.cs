@@ -55,7 +55,7 @@ namespace Orange.ApiTokenValidation.Repositories.EntityFramework.Tests
 
             // Assert
             result.Should().BeEquivalentTo(tokenDescriptor, x => x.Excluding(y => y.ExpirationDate));
-            result.ExpirationDate.Should().BeCloseTo(tokenDescriptor.ExpirationDate.Value, TimeSpan.FromMilliseconds(0.001));
+            result.ExpirationDate.Should().BeCloseTo(tokenDescriptor.ExpirationDate, TimeSpan.FromMilliseconds(0.001));
         }
 
         [Test]
@@ -175,7 +175,7 @@ namespace Orange.ApiTokenValidation.Repositories.EntityFramework.Tests
         private void BeEquivalentTo(TokenDescriptor tokenDescriptor, TokenDescriptor otherTokenDescriptor)
         {
             tokenDescriptor.Should().BeEquivalentTo(otherTokenDescriptor, x => x.Excluding(y => y.ExpirationDate));
-            tokenDescriptor.ExpirationDate.Should().BeCloseTo(otherTokenDescriptor.ExpirationDate.Value, TimeSpan.FromMilliseconds(0.001));
+            tokenDescriptor.ExpirationDate.Should().BeCloseTo(otherTokenDescriptor.ExpirationDate, TimeSpan.FromMilliseconds(0.001));
         }
     }
 }

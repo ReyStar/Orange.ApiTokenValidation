@@ -37,7 +37,7 @@ namespace Orange.ApiTokenValidation.DataBaseProducer
                 || !isExist.Value)
             {
                 var resourceLoader = new ResourceLoader(typeof(DataBaseCreator).Assembly);
-                var dbCreationScript = await resourceLoader.LoadStringAsync($"{typeof(DataBaseCreator).Namespace}.Scripts.CreateTokenDB");
+                var dbCreationScript = await resourceLoader.LoadStringAsync($"{typeof(DataBaseCreator).Namespace}.Scripts.CreateTokenDB.sql");
                 await connection.QueryAsync(new CommandDefinition(
                     string.Format(dbCreationScript, dataBase, connectionStringBuilder.Username),
                     cancellationToken: token));

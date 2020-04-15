@@ -1,14 +1,5 @@
 version: '3.7'
 services:
-  postgres-server:    # The Postgres Database Service
-    image: postgres:latest
-    restart: always
-    environment:   # Username, password and database name variables
-      POSTGRES_USER: sqladmin
-      POSTGRES_PASSWORD: sqlpassword
-    ports:
-      - 2345:2345
-      - 5432:5432
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4
@@ -20,6 +11,16 @@ services:
     depends_on: 
       - postgres-server 
     restart: always
+  postgres-server:    # The Postgres Database Service
+    container_name: postgres-server
+    image: postgres:latest
+    restart: always
+    environment:   # Username, password and database name variables
+      POSTGRES_USER: sqladmin
+      POSTGRES_PASSWORD: sqlpassword
+    ports:
+      - 2345:2345
+      - 5432:5432
   #https://www.c-sharpcorner.com/article/reporting-metrics-to-prometheus-in-asp-net-core/
   prometheus:
     image: prom/prometheus
@@ -137,4 +138,18 @@ services:
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
       CONNECT_PLUGIN_PATH: '/usr/share/java'
     # volumes: 
-    #   - ./connect/postgres-source.json:/connect/postgres-source.json      
+    #   - ./connect/postgres-source.json:/connect/postgres-source.json     
+  orangeapitokenvalidationshell:
+    image: orangeapitokenvalidationshell:dev
+    depends_on: 
+      - postgres-server
+      - kafka-1
+      - prometheus
+      - pushgateway
+    ports:
+      - "60006:60001"
+    container_name: orangeapitokenvalidationshell
+    volumes:
+      - ./orangeapitokenvalidationshell/appsettings.Development.json:/Public/appsettings.Development.json
+    
+

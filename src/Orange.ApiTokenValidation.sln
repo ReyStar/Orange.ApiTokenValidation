@@ -37,6 +37,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Client", "Tools\Orange.ApiTokenValidation.Client\Orange.ApiTokenValidation.Client.csproj", "{312CAA7B-8B62-4053-90A0-5226993FAE72}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BEAD512-E958-4779-8F5A-2D76F06B5FBC}"
+	ProjectSection(SolutionItems) = preProject
+		readme.txt = readme.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

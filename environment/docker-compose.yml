@@ -1,5 +1,6 @@
 version: '3.7'
 services:
+################ RELATIONAL DB #############################################################################
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4
@@ -21,7 +22,8 @@ services:
     ports:
       - 2345:2345
       - 5432:5432
-  #https://www.c-sharpcorner.com/article/reporting-metrics-to-prometheus-in-asp-net-core/
+
+########### MONITORING ######################################################################################  
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -36,6 +38,8 @@ services:
     privileged: true
     depends_on:
       - alertmanager
+      - victoriametrics
+    
   alertmanager:
     image: prom/alertmanager:latest
     container_name: alertmanager
@@ -47,6 +51,23 @@ services:
     # command:
     #   - '-config.file=/etc/alertmanager/alertmanager.yml'
     #   - '-storage.path=/alertmanager'
+
+  victoriametrics:
+    container_name: victoriametrics
+    image: victoriametrics/victoria-metrics
+    ports:
+      - 8428:8428
+      - 2003:2003
+      - 4242:4242
+    volumes:
+      - ./victoriametrics/storage:/storage
+    command:
+      - '--storageDataPath=/storage'
+      - '--graphiteListenAddr=:2003'
+      - '--opentsdbListenAddr=:4242'
+      - '--httpListenAddr=:8428'
+    restart: always
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -55,7 +76,9 @@ services:
     volumes:
       - ./grafana:/var/lib/grafana
     depends_on:
-      - prometheus
+      #- prometheus
+      - "victoriametrics"
+
   pushgateway:
     image: prom/pushgateway:latest
     container_name: pushgateway
@@ -64,10 +87,30 @@ services:
       - "9091:9091"
     depends_on:
       - prometheus
+  
+  postgres-exporter:
+    image: wrouesnel/postgres_exporter:latest
+    restart: always
+    environment:
+      #- DATA_SOURCE_NAME=postgresql://postgres:password@postgres-db:5432/postgres?sslmode=disable
+      - DATA_SOURCE_URI=postgres-server:5432/postgres?sslmode=disable
+      - DATA_SOURCE_USER=sqladmin
+      - DATA_SOURCE_PASS=sqlpassword
+    ports:
+      - "9187:9187"
+    depends_on:
+      - postgres-server
+  
+  kafka-exporter:
+    image: danielqsj/kafka-exporter
+    hostname: kafka-exporter
+    container_name: kafka-exporter
+    restart: always
+    depends_on:
+      - kafka-1
+    command: --kafka.server=kafka-1:9092
 
-  #https://github.com/confluentinc/kafka-workshop/blob/master/docker-compose.yml
-  #https://github.com/confluentinc/docker-images/blob/master/examples/fullstack/docker-compose.yml
-  #https://docs.confluent.io/current/installation/docker/config-reference.html
+###########KAFKA###########################################################################################
   zookeeper-1:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper-1
@@ -153,6 +196,8 @@ services:
       CONNECT_PLUGIN_PATH: '/usr/share/java'
     # volumes: 
     #   - ./connect/postgres-source.json:/connect/postgres-source.json     
+
+################# MY APPLICATION ###################################################    
   orangeapitokenvalidationshell:
     image: orangeapitokenvalidationshell:dev
     depends_on: 
@@ -165,20 +210,13 @@ services:
     container_name: orangeapitokenvalidationshell
     volumes:
       - ./orangeapitokenvalidationshell/appsettings.Development.json:/Public/appsettings.Development.json
-  #https://stackoverflow.com/questions/58226507/docker-compose-with-postgresql-and-prometheus-postgresql-exporter-refusing-to-co
-  postgres-exporter:
-    image: wrouesnel/postgres_exporter:latest
-    restart: always
-    environment:
-      #- DATA_SOURCE_NAME=postgresql://postgres:password@postgres-db:5432/postgres?sslmode=disable
-      - DATA_SOURCE_URI=postgres-server:5432/postgres?sslmode=disable
-      - DATA_SOURCE_USER=sqladmin
-      - DATA_SOURCE_PASS=sqlpassword
-    ports:
-      - "9187:9187"
-    depends_on:
-      - postgres-server
-
+  
+################# LINKS ##############################################################
+#https://www.c-sharpcorner.com/article/reporting-metrics-to-prometheus-in-asp-net-core/
+#https://github.com/confluentinc/kafka-workshop/blob/master/docker-compose.yml
+#https://github.com/confluentinc/docker-images/blob/master/examples/fullstack/docker-compose.yml
+#https://docs.confluent.io/current/installation/docker/config-reference.html
+#https://stackoverflow.com/questions/58226507/docker-compose-with-postgresql-and-prometheus-postgresql-exporter-refusing-to-co
 #https://github.com/deanwilson/docker-compose-prometheus/blob/master/postgresql-server/docker-compose.yaml
 #https://github.com/deanwilson/docker-compose-prometheus/blob/master/postgresql-server/postgresql-server.json
 

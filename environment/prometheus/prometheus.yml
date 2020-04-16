@@ -11,7 +11,13 @@ alerting:
         - targets:
             - alertmanager:9093
 
+remote_write:
+  - url: "http://victoriametrics:8428/api/v1/write"
+    queue_config:
+      max_samples_per_send: 10000
+
 scrape_configs:
+  
   - job_name: prometheus-self-poll-job
     scrape_interval: 8s  
     scrape_timeout: 6s  
@@ -20,10 +26,17 @@ scrape_configs:
     static_configs:  
     - targets:  
         - localhost:9090 #prometheus address in container
+  
   - job_name: alertmanager-monitoring-job
     static_configs:
     - targets:
         - alertmanager:9093
+   
+  - job_name: victoriametrics-feder-job
+    static_configs:
+    - targets:
+        - victoriametrics:8428
+  
   - job_name: proxy-orange-api-token-validation-1
     scrape_interval: 8s  
     scrape_timeout: 6s  
@@ -32,6 +45,7 @@ scrape_configs:
     static_configs:  
     - targets:  
         - pushgateway:9091 #need add u service manually or use pushgateway proxy
+  
   - job_name: postgres-exporter-job
     scrape_interval: 8s  
     scrape_timeout: 6s  
@@ -40,3 +54,8 @@ scrape_configs:
     static_configs:  
     - targets:  
         - postgres-exporter:9187 #need add u service manually or use pushgateway proxy
+  
+  - job_name: kafka-exporter-feeder-job
+    static_configs:
+      - targets:
+          - "kafka-exporter:9308"

@@ -151,5 +151,21 @@ services:
     container_name: orangeapitokenvalidationshell
     volumes:
       - ./orangeapitokenvalidationshell/appsettings.Development.json:/Public/appsettings.Development.json
-    
+  #https://stackoverflow.com/questions/58226507/docker-compose-with-postgresql-and-prometheus-postgresql-exporter-refusing-to-co
+  postgres-exporter:
+    image: wrouesnel/postgres_exporter:latest
+    restart: always
+    environment:
+      #- DATA_SOURCE_NAME=postgresql://postgres:password@postgres-db:5432/postgres?sslmode=disable
+      - DATA_SOURCE_URI=postgres-server:5432/postgres?sslmode=disable
+      - DATA_SOURCE_USER=sqladmin
+      - DATA_SOURCE_PASS=sqlpassword
+    ports:
+      - "9187:9187"
+    depends_on:
+      - postgres-server
+
+#https://github.com/deanwilson/docker-compose-prometheus/blob/master/postgresql-server/docker-compose.yaml
+#https://github.com/deanwilson/docker-compose-prometheus/blob/master/postgresql-server/postgresql-server.json
+
 

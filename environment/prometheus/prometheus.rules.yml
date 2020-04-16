@@ -1,0 +1,23 @@
+groups:
+  - name: my-app-down-1
+    rules:
+    - alert: my-app-down-error
+      expr: increase(heartbeat_count{exported_instance="7019B250-733E-4131-A9FB-4F81AC6DFC1A"} [20s]) < 1
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: My app is down
+
+  - name: example
+    rules:
+      # Uptime alerting rule
+      # Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
+    - alert: ServerDown
+      expr: up == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: One or more targets are {{ $labels.instance }} down
+        description: Instance {{ $labels.instance }} of {{ $labels.job }} is down

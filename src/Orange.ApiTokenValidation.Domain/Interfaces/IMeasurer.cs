@@ -3,6 +3,6 @@
     public interface IMeasurer
     {
         void Heartbeat();
-        void RequestMetric(string path, string method, int statusCode);
+        void RequestMetric(string path, string method, int statusCode, string correlationId);
     }
 }

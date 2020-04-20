@@ -27,7 +27,7 @@ namespace Orange.ApiTokenValidation.Metrics
             _httpRequestCounter = Prometheus.Metrics.CreateCounter("request_total", "HTTP Requests Total",
                 new CounterConfiguration
                 {
-                    LabelNames = new[] {"path", "method", "status"}
+                    LabelNames = new[] {"path", "method", "status", "correlation-id" }
                 });
 
             if (measurerConfiguration.UsePushMetricsServer)
@@ -50,9 +50,9 @@ namespace Orange.ApiTokenValidation.Metrics
             _heartbeatCounter.Inc();
         }
 
-        public void RequestMetric(string path, string method, int statusCode)
+        public void RequestMetric(string path, string method, int statusCode, string correlationId)
         {
-            _httpRequestCounter.Labels(path, method, statusCode.ToString()).Inc();
+            _httpRequestCounter.Labels(path, method, statusCode.ToString(), correlationId).Inc();
         }
 
         public void Dispose()

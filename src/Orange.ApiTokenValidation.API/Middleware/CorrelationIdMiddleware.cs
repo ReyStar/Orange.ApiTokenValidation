@@ -12,7 +12,7 @@ namespace Orange.ApiTokenValidation.API.Middleware
     public class CorrelationIdMiddleware : IMiddleware
     {
         private readonly ILogger _logger;
-        private const string Header = "x-correlation-id";
+        public const string CorrelationHeaderName = "x-correlation-id";
         private const string CorrelationIdScope = "CorrelationID";
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Orange.ApiTokenValidation.API.Middleware
         /// </summary>
         public Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            if (!context.Request.Headers.TryGetValue(Header, out var correlationId))
+            if (!context.Request.Headers.TryGetValue(CorrelationHeaderName, out var correlationId))
             {
                 correlationId = Guid.NewGuid().ToString();
             }
@@ -41,7 +41,7 @@ namespace Orange.ApiTokenValidation.API.Middleware
                 //     requestIdFeature.TraceIdentifier;
                 //}
 
-                context.Response.Headers[Header] = correlationId;
+                context.Response.Headers[CorrelationHeaderName] = correlationId;
 
                 return next(context);
             }

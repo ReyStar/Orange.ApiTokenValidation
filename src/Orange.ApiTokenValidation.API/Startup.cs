@@ -39,6 +39,12 @@ namespace Orange.ApiTokenValidation.API
                     .AddNewtonsoftJson()
                     .ConfigureJsonFormat();
 
+            services.AddHttpClient()
+                    .AddHeaderPropagation(options =>
+                                          {
+                                              options.Headers.Add(CorrelationIdMiddleware.CorrelationHeaderName);
+                                          });
+
             services.AuthenticationConfigure();
 
             services.Configure<GzipCompressionProviderOptions>(options =>
@@ -73,6 +79,8 @@ namespace Orange.ApiTokenValidation.API
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseHeaderPropagation();
 
             app.UseHttpsRedirection();
             app.UseRouting();

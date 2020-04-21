@@ -15,7 +15,7 @@
             https://joonasw.net/view/creating-auth-scheme-in-aspnet-core-2
             </summary>
         </member>
-        <member name="M:Orange.ApiTokenValidation.API.Auth.OrangeJwtAuthenticationHandler.#ctor(Microsoft.Extensions.Options.IOptionsMonitor{Orange.ApiTokenValidation.API.Auth.OrangeJwtAuthenticationSchemeOptions},Microsoft.Extensions.Logging.ILoggerFactory,System.Text.Encodings.Web.UrlEncoder,Microsoft.AspNetCore.Authentication.ISystemClock,Orange.ApiTokenValidation.Domain.Interfaces.ITokenValidationService,Microsoft.Extensions.Options.IOptions{Orange.ApiTokenValidation.Common.CommonConfiguration})">
+        <member name="M:Orange.ApiTokenValidation.API.Auth.OrangeJwtAuthenticationHandler.#ctor(Microsoft.Extensions.Options.IOptionsMonitor{Orange.ApiTokenValidation.API.Auth.OrangeJwtAuthenticationSchemeOptions},Microsoft.Extensions.Logging.ILoggerFactory,System.Text.Encodings.Web.UrlEncoder,Microsoft.AspNetCore.Authentication.ISystemClock,Orange.ApiTokenValidation.Application.Interfaces.ITokenValidationService,Microsoft.Extensions.Options.IOptions{Orange.ApiTokenValidation.Common.CommonConfiguration})">
             <summary>
             .ctor
             </summary>
@@ -126,7 +126,7 @@
             Token management controller
             </summary>
         </member>
-        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenManagementController.#ctor(Orange.ApiTokenValidation.Domain.Interfaces.ITokenManagementService,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Controllers.V1.TokenManagementController})">
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenManagementController.#ctor(Orange.ApiTokenValidation.Application.Interfaces.ITokenManagementService,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Controllers.V1.TokenManagementController})">
             <summary>
             .ctor
             </summary>
@@ -156,7 +156,7 @@
             Token validation controller
             </summary>
         </member>
-        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenValidationController.#ctor(Orange.ApiTokenValidation.Domain.Interfaces.ITokenValidationService,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Controllers.V1.TokenValidationController})">
+        <member name="M:Orange.ApiTokenValidation.API.Controllers.V1.TokenValidationController.#ctor(Orange.ApiTokenValidation.Application.Interfaces.ITokenValidationService,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Controllers.V1.TokenValidationController})">
             <summary>
             .ctor
             </summary>
@@ -230,7 +230,7 @@
             Write request metrics
             </summary>
         </member>
-        <member name="M:Orange.ApiTokenValidation.API.Middleware.RequestWriterMiddleware.#ctor(Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Middleware.RequestWriterMiddleware},Orange.ApiTokenValidation.Domain.Interfaces.IMeasurer)">
+        <member name="M:Orange.ApiTokenValidation.API.Middleware.RequestWriterMiddleware.#ctor(Microsoft.Extensions.Logging.ILogger{Orange.ApiTokenValidation.API.Middleware.RequestWriterMiddleware},Orange.ApiTokenValidation.Application.Interfaces.IMeasurer)">
             <summary>
             .ctor
             </summary>

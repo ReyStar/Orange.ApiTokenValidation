@@ -11,8 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using Orange.ApiTokenValidation.Application.Interfaces;
 using Orange.ApiTokenValidation.Common;
-using Orange.ApiTokenValidation.Domain.Interfaces;
 using Orange.ApiTokenValidation.Domain.Models;
 
 namespace Orange.ApiTokenValidation.Repositories.EntityFramework.Tests

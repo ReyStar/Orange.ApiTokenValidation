@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Orange.ApiTokenValidation.Domain.Interfaces;
+using Orange.ApiTokenValidation.Application.Interfaces;
 
 namespace Orange.ApiTokenValidation.Notification
 {

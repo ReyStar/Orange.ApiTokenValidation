@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Orange.ApiTokenValidation.Domain\Orange.ApiTokenValidation.Domain.csproj" />
+    <ProjectReference Include="..\Orange.ApiTokenValidation.Application\Orange.ApiTokenValidation.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

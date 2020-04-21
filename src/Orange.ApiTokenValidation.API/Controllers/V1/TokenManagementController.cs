@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Orange.ApiTokenValidation.API.Attributes;
 using Orange.ApiTokenValidation.API.Controllers.V1.DTO;
-using Orange.ApiTokenValidation.Domain.Interfaces;
+using Orange.ApiTokenValidation.Application.Interfaces;
+using Orange.ApiTokenValidation.Application.ModelValidation;
 using Orange.ApiTokenValidation.Domain.Models;
-using Orange.ApiTokenValidation.Domain.ModelValidation;
 
 namespace Orange.ApiTokenValidation.API.Controllers.V1
 {

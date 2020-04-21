@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-using Orange.ApiTokenValidation.Domain.Exceptions;
+using Orange.ApiTokenValidation.Application.Exceptions;
 
 namespace Orange.ApiTokenValidation.API.Filters
 {

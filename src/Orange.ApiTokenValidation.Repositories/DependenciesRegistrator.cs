@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Orange.ApiTokenValidation.Application.Interfaces;
 using Orange.ApiTokenValidation.Common;
-using Orange.ApiTokenValidation.Domain.Interfaces;
 using Orange.ApiTokenValidation.Repositories.Repositories;
 
 namespace Orange.ApiTokenValidation.Repositories

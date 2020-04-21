@@ -37,7 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Orange.ApiTokenValidation.Common\Orange.ApiTokenValidation.Common.csproj" />
-    <ProjectReference Include="..\..\Orange.ApiTokenValidation.Domain\Orange.ApiTokenValidation.Domain.csproj" />
+    <ProjectReference Include="..\..\Orange.ApiTokenValidation.Application\Orange.ApiTokenValidation.Application.csproj" />
     <ProjectReference Include="..\..\Orange.ApiTokenValidation.Repositories\Orange.ApiTokenValidation.Repositories.csproj" />
   </ItemGroup>
 

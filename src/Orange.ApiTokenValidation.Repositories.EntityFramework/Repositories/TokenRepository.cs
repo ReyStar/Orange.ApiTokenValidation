@@ -6,9 +6,9 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using NpgsqlTypes;
+using Orange.ApiTokenValidation.Application.Exceptions;
+using Orange.ApiTokenValidation.Application.Interfaces;
 using Orange.ApiTokenValidation.Common;
-using Orange.ApiTokenValidation.Domain.Exceptions;
-using Orange.ApiTokenValidation.Domain.Interfaces;
 using Orange.ApiTokenValidation.Domain.Models;
 using Orange.ApiTokenValidation.Repositories.EntityFramework.Models;
 

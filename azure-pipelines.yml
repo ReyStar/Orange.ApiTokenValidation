@@ -31,5 +31,5 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-    projects: '**/src/Tests/Orange.ApiTokenValidation.Domain.Tests/*.csproj'
+    projects: '**/src/Tests/Orange.ApiTokenValidation.Application.Tests/*.csproj'
     testRunTitle: 'Unit'

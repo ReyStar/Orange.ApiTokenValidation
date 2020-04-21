@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Orange.ApiTokenValidation.Domain.Interfaces;
+using Orange.ApiTokenValidation.Application.Interfaces;
 
 namespace Orange.ApiTokenValidation.API.Middleware
 {
@@ -26,15 +27,20 @@ namespace Orange.ApiTokenValidation.API.Middleware
         {
             var path = httpContext.Request.Path.Value;
             var method = httpContext.Request.Method;
-
+            httpContext.Request.Headers.TryGetValue(CorrelationIdMiddleware.CorrelationHeaderName,
+                                                    out var correlationId);
+            var sw = Stopwatch.StartNew();
             try
             {
                 await next.Invoke(httpContext);
             }
             finally
             {
+                sw.Stop();
                 var statusCode = httpContext.Response.StatusCode;
-                _measurer.RequestMetric(path, method, statusCode);
+                _measurer.RequestMetric(path, method, statusCode, correlationId);
+                
+                _logger.LogDebug($"{method} {path} {statusCode} {correlationId} {sw.ElapsedMilliseconds}");
             }
         }
     }

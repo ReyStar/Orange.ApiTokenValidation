@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Dapper;
 using Dapper.Dommel;
+using Orange.ApiTokenValidation.Application.Exceptions;
+using Orange.ApiTokenValidation.Application.Interfaces;
 using Orange.ApiTokenValidation.Common;
-using Orange.ApiTokenValidation.Domain.Exceptions;
-using Orange.ApiTokenValidation.Domain.Interfaces;
 using Orange.ApiTokenValidation.Domain.Models;
 using Orange.ApiTokenValidation.Repositories.Models;
 

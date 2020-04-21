@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Orange.ApiTokenValidation.Application.Exceptions;
+using Orange.ApiTokenValidation.Application.Interfaces;
 using Orange.ApiTokenValidation.Common;
-using Orange.ApiTokenValidation.Domain.Exceptions;
-using Orange.ApiTokenValidation.Domain.Interfaces;
 using Orange.ApiTokenValidation.Domain.Models;
 
 namespace Orange.ApiTokenValidation.API.Auth

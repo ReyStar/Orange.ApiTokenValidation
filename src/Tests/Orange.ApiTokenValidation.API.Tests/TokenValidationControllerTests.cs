@@ -10,8 +10,8 @@ using Moq;
 using NUnit.Framework;
 using Orange.ApiTokenValidation.API.Controllers.V1;
 using Orange.ApiTokenValidation.API.Controllers.V1.DTO;
-using Orange.ApiTokenValidation.Domain.Exceptions;
-using Orange.ApiTokenValidation.Domain.Interfaces;
+using Orange.ApiTokenValidation.Application.Exceptions;
+using Orange.ApiTokenValidation.Application.Interfaces;
 using Orange.ApiTokenValidation.Domain.Models;
 
 namespace Orange.ApiTokenValidation.API.Tests

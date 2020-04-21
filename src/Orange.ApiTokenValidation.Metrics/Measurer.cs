@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Options;
+using Orange.ApiTokenValidation.Application.Interfaces;
 using Orange.ApiTokenValidation.Common;
-using Orange.ApiTokenValidation.Domain.Interfaces;
 using Prometheus;
 using Prometheus.DotNetRuntime;
 

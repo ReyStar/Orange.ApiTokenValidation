@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Orange.ApiTokenValidation.Domain.Interfaces;
+using Orange.ApiTokenValidation.Application.Interfaces;
 
 namespace Orange.ApiTokenValidation.Shell
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json.Linq;
-using Orange.ApiTokenValidation.Domain.ModelValidation;
+using Orange.ApiTokenValidation.Application.ModelValidation;
 
 namespace Orange.ApiTokenValidation.API.Controllers.V1.DTO
 {

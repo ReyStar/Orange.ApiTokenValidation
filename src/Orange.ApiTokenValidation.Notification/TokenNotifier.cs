@@ -3,8 +3,8 @@ using System.Threading;
 using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Orange.ApiTokenValidation.Domain.Interfaces;
-using Orange.ApiTokenValidation.Domain.NotifyMessages;
+using Orange.ApiTokenValidation.Application.Interfaces;
+using Orange.ApiTokenValidation.Application.NotifyMessages;
 
 namespace Orange.ApiTokenValidation.Notification
 {

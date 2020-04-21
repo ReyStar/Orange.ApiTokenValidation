@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.API", "Orange.ApiTokenValidation.API\Orange.ApiTokenValidation.API.csproj", "{C5EAD129-B104-489F-9478-785B877DF9EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Domain", "Orange.ApiTokenValidation.Domain\Orange.ApiTokenValidation.Domain.csproj", "{8554B80B-6B28-4EBB-A473-FDD8A80A9ECB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Application", "Orange.ApiTokenValidation.Application\Orange.ApiTokenValidation.Application.csproj", "{8554B80B-6B28-4EBB-A473-FDD8A80A9ECB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Repositories", "Orange.ApiTokenValidation.Repositories\Orange.ApiTokenValidation.Repositories.csproj", "{97F9C11F-8D7E-4A18-9939-013909126133}"
 EndProject
@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E77C93CD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Notification", "Orange.ApiTokenValidation.Notification\Orange.ApiTokenValidation.Notification.csproj", "{44CAFF30-F93B-4CFE-9F9E-789BA40CE221}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Domain.Tests", "Tests\Orange.ApiTokenValidation.Domain.Tests\Orange.ApiTokenValidation.Domain.Tests.csproj", "{FE4847D1-6B82-4E12-BB94-7CA09012D5D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Application.Tests", "Tests\Orange.ApiTokenValidation.Application.Tests\Orange.ApiTokenValidation.Application.Tests.csproj", "{FE4847D1-6B82-4E12-BB94-7CA09012D5D4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orange.ApiTokenValidation.Repositories.Tests", "Tests\Orange.ApiTokenValidation.Repositories.Tests\Orange.ApiTokenValidation.Repositories.Tests.csproj", "{16CCB713-0618-47A6-9D50-9581AB94BAE3}"
 EndProject
@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		readme.txt = readme.txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orange.ApiTokenValidation.Domain", "Orange.ApiTokenValidation.Domain\Orange.ApiTokenValidation.Domain.csproj", "{2351B806-AEEB-48B7-B0B6-D1F7061EF5F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +110,10 @@ Global
 		{312CAA7B-8B62-4053-90A0-5226993FAE72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{312CAA7B-8B62-4053-90A0-5226993FAE72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{312CAA7B-8B62-4053-90A0-5226993FAE72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2351B806-AEEB-48B7-B0B6-D1F7061EF5F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2351B806-AEEB-48B7-B0B6-D1F7061EF5F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2351B806-AEEB-48B7-B0B6-D1F7061EF5F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2351B806-AEEB-48B7-B0B6-D1F7061EF5F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
